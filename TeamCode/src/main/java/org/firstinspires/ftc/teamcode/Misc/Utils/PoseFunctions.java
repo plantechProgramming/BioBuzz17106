@@ -1,0 +1,134 @@
+package org.firstinspires.ftc.teamcode.Misc.Utils;
+
+import android.util.Pair;
+
+import com.pedropathing.ftc.FTCCoordinates;
+import com.pedropathing.ftc.InvertedFTCCoordinates;
+import com.pedropathing.ftc.PoseConverter;
+import com.pedropathing.geometry.PedroCoordinates;
+import com.pedropathing.geometry.Pose;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.teamcode.Misc.RobotPose;
+
+public class PoseFunctions {
+
+    RobotPose robotPose;
+
+    public PoseFunctions(RobotPose robotPose){
+        this.robotPose = robotPose;
+    }
+
+    public static final double LEN_FIELD = 360.172; // in cm
+    public static final double GOAL_HEADING_BLUE = -126;
+    public static final double GOAL_HEADING_RED = 126;
+
+    public static Pose2D getGoal(){ // in official ftc cords
+        final double Y_GOAL_OFFSET = 16;
+        final double X_GOAL_OFFSET = 5;
+        if(Alliance.get() == Alliance.RED){
+            return new Pose2D(DistanceUnit.CM,-LEN_FIELD/2+X_GOAL_OFFSET, LEN_FIELD/2-Y_GOAL_OFFSET,AngleUnit.DEGREES,GOAL_HEADING_RED);
+        }
+        else{
+            return new Pose2D(DistanceUnit.CM,-LEN_FIELD/2+X_GOAL_OFFSET, -LEN_FIELD/2+Y_GOAL_OFFSET,AngleUnit.DEGREES,GOAL_HEADING_BLUE);
+        }
+    }
+
+    public static Pose2D getTag(){ // in official ftc cords
+        final double Y_TAG_OFFSET = 30;
+        final double X_TAG_OFFSET = 35;
+        if(Alliance.get() == Alliance.RED){
+            return new Pose2D(DistanceUnit.CM,-LEN_FIELD/2+ X_TAG_OFFSET, LEN_FIELD/2- Y_TAG_OFFSET,AngleUnit.DEGREES,GOAL_HEADING_RED);
+        }
+        else{
+            return new Pose2D(DistanceUnit.CM,-LEN_FIELD/2+ X_TAG_OFFSET, -LEN_FIELD/2+ Y_TAG_OFFSET,AngleUnit.DEGREES,GOAL_HEADING_BLUE);
+        }
+    }
+
+    public boolean isFar(){
+        return robotPose.getX() > 60;
+    }
+    public Pair<Double, Double> getXYDiffToPoint(Pose2D point){
+        double pointX = point.getX(DistanceUnit.CM);
+        double pointY = point.getY(DistanceUnit.CM);
+        return new Pair<>(pointX-robotPose.getX(), pointY-robotPose.getY());
+    }
+    public double getPointToGoalAngle(Pose2D point1){
+        double x1 = point1.getX(DistanceUnit.CM);
+        double y1 = point1.getY(DistanceUnit.CM);
+        double goalX = getGoal().getX(DistanceUnit.CM);
+        double goalY = getGoal().getY(DistanceUnit.CM);
+        return Math.toDegrees(Math.atan2(goalY-y1,goalX-x1));
+    }
+    public Pair<Double,Double> getXYdistToGoal(){
+        return getXYDiffToPoint(getGoal());
+    }
+    public double getDistFromPoint(Pose2D point){
+        return Math.hypot(getXYDiffToPoint(point).first, getXYDiffToPoint(point).second);
+    }
+    public double getDistFromGoal(){
+        return Math.hypot(getXYdistToGoal().first,getXYdistToGoal().second);
+    }
+
+    public double getAngleFromPoint(Pose2D point){
+        return Math.toDegrees(Math.atan2(getXYDiffToPoint(point).second, getXYDiffToPoint(point).first));
+    }
+    public double getAngleFromGoal(){
+        double deg = Math.atan2(getXYdistToGoal().second, getXYdistToGoal().first);
+        return Math.toDegrees(deg);
+    }
+    public static Pose2D subtractPoses(Pose2D pos1, Pose2D pos2){
+        double subtractedX = pos1.getX(DistanceUnit.CM) - pos2.getX(DistanceUnit.CM);
+        double subtractedY = pos1.getY(DistanceUnit.CM) - pos2.getY(DistanceUnit.CM);
+        double subtractedHeading = AngleFunctions.getDiffBetweenAngles(pos1.getHeading(AngleUnit.DEGREES), pos2.getHeading(AngleUnit.DEGREES));
+        return new Pose2D(DistanceUnit.CM, subtractedX, subtractedY, AngleUnit.DEGREES, subtractedHeading);
+    }
+    public static boolean poseThreshold(Pose2D pos1, Pose2D pos2, double xyThresh, double headingThresh) {
+        Pose2D subtractedPose = subtractPoses(pos1, pos2);
+        boolean xInThresh = Math.abs(subtractedPose.getX(DistanceUnit.CM)) < xyThresh;
+        boolean yInThresh = Math.abs(subtractedPose.getY(DistanceUnit.CM)) < xyThresh;
+        boolean headingInThresh = Math.abs(subtractedPose.getHeading(AngleUnit.DEGREES)) < headingThresh;
+        return xInThresh && yInThresh && headingInThresh;
+    }
+
+    public static double disBetweenPoses(Pose2D pose1, Pose2D pose2){ // dis in cm, this function doesn't use the angle
+        Pose2D subtractedPose = subtractPoses(pose1, pose2);
+        return Math.hypot(subtractedPose.getX(DistanceUnit.CM), subtractedPose.getY(DistanceUnit.CM));
+    }
+
+    public static boolean areEqualPoses(Pose2D pose1, Pose2D pose2){
+        return poseThreshold(pose1, pose2, 0.00001, 0.00001);
+    }
+
+    public static Pair<Double, Double> rotation2D(double x, double y, double deg){
+        double rad = Math.toRadians(deg);
+        return new Pair<>(x*Math.cos(rad)-y*Math.sin(rad), x*Math.sin(rad)+y*Math.cos(rad));
+    }
+
+    public static Pose2D pose3DToPose2D(Pose3D pose3D, AngleUnit angleUnit){
+        DistanceUnit disUnit = pose3D.getPosition().unit;
+        return new Pose2D(disUnit, pose3D.getPosition().x, pose3D.getPosition().y,
+                angleUnit, pose3D.getOrientation().getYaw());
+    }
+
+    public static Pose2D poseToPose2D(Pose pose){
+        Pose2D pose2D = PoseConverter.poseToPose2D(pose, InvertedFTCCoordinates.INSTANCE);
+        return new Pose2D(DistanceUnit.CM, pose2D.getX(DistanceUnit.CM), pose2D.getY(DistanceUnit.CM),
+                AngleUnit.DEGREES, pose2D.getHeading(AngleUnit.DEGREES));
+    }
+    public static Pose pose2DToPose(Pose2D pose2D){
+        return PoseConverter.pose2DToPose(pose2D, FTCCoordinates.INSTANCE).getAsCoordinateSystem(PedroCoordinates.INSTANCE);
+    }
+
+    public void updateTelemetry(Telemetry telemetry){
+        TelemetryUtils.addTitle(telemetry, "starting pose functions telemetry");
+        telemetry.addData("dis to goal", getDistFromGoal());
+        telemetry.addData("angle to goal", getAngleFromGoal());
+        TelemetryUtils.addTitle(telemetry, "ending pose functions telemetry");
+    }
+}
+
