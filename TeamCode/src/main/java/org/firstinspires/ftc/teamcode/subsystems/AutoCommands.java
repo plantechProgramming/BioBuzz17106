@@ -44,8 +44,7 @@ public class AutoCommands{
     }
 
 //    private Command goToBlob(){
-//        Pose targetArtifact;
-//        try{
+//        Pose targetArtifact;//        try{
 //            targetArtifact = PoseFunctions.pose2DToPose(
 //                            limelight.getBestPoseForPickup(PoseFunctions.poseToPose2D(follower.getPose())));
 //        }
