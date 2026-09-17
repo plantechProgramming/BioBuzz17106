@@ -21,6 +21,6 @@ public class CloseStillAuto extends TeamOpMode {
     @Override
     protected void end() {
         Paths paths = new Paths();
-        DataSaving.setEndPos(paths.points.startPose);
+//        DataSaving.setEndPos(paths.points.startPose);
     }
 }

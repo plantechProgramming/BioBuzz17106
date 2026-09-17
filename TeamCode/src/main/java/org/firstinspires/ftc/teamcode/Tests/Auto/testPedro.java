@@ -19,10 +19,10 @@ public class testPedro extends LinearOpMode {
     int counter = 0;
     public void autonomousPathUpdate() {
         if(counter == 0){
-            follower.followPath(path.scorePreloadFar);
+//            follower.followPath(path.scorePreloadFar);
             counter++;
         } else if (counter == 1) {
-            follower.followPath(path.grabGPPFar);
+//            follower.followPath(path.grabGPPFar);
             counter++;
         }
     }
@@ -36,7 +36,7 @@ public class testPedro extends LinearOpMode {
         path = new Paths();
         follower = Constants.createFollower(hardwareMap);
 
-        follower.setStartingPose(path.points.startPoseFar);
+//        follower.setStartingPose(path.points.startPoseFar);
         path.buildPaths(follower);
         waitForStart();
         while (opModeIsActive()){

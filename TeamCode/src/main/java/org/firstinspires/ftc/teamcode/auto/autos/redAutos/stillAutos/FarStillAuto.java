@@ -23,6 +23,6 @@ public class FarStillAuto extends TeamOpMode {
     @Override
     protected void end() {
         Paths paths = new Paths();
-        DataSaving.setEndPos(paths.points.startPoseFar);
+//        DataSaving.setEndPos(paths.points.startPoseFar);
     }
 }

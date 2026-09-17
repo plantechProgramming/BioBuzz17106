@@ -26,13 +26,13 @@ public class test extends TeamAuto {
     public Command autoRoutine() {
         return sequential(
                 command.startShooter(true),
-                waitMs(3000),
-                repeat(sequential(
-                        command.goToDetectedBlob(),
-                        command.scoreDetectedBlob(path),
-                        follow(follower, follower.pathBuilder().addPath(new BezierLine(path.points.scorePoseFar, path.points.startPoseFar))
-                                .setLinearHeadingInterpolation(path.points.scorePoseFar.getHeading(), path.points.startPoseFar.getHeading()).build())
-                ), 15)
+                waitMs(3000)
+//                repeat(sequential(
+//                        command.goToDetectedBlob(),
+//                        command.scoreDetectedBlob(path),
+//                        follow(follower, follower.pathBuilder().addPath(new BezierLine(path.points.scorePoseFar, path.points.startPoseFar))
+//                                .setLinearHeadingInterpolation(path.points.scorePoseFar.getHeading(), path.points.startPoseFar.getHeading()).build())
+//                ), 15)
         );
     }
 }
