@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
 
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.odometry;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ftc.InvertedFTCCoordinates;
@@ -55,7 +57,7 @@ public class TeleOp extends TeamOpMode {
         Pose lastPos = follower.getPose();
         DriveTrain.setDriveToBrakeMode();
 
-        while (opModeIsActive() ) {
+        while (opModeIsActive()) {
             elapsedTime.reset();
 
             gamepadForward = -gamepad1.left_stick_y;
@@ -81,7 +83,7 @@ public class TeleOp extends TeamOpMode {
                 holdInitialized = false;
                 if(activatedHold){
                     activatedHold = false;
-                    follower.followPath(new Path(new BezierLine(follower.getPose(), follower.getPose())), false);
+                    follower.followPath(new Path(new BezierLine(follower.getPose(), follower.getPose())), false); // need to clean
                     DriveTrain.setDriveToBrakeMode();
                 }
                 if(turning){

@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Misc.InitMotors;
+import org.firstinspires.ftc.teamcode.Misc.InitComponents;
 import org.firstinspires.ftc.teamcode.Misc.PID;
 import org.firstinspires.ftc.teamcode.Misc.Utils.TelemetryUtils;
 
@@ -22,10 +22,10 @@ public class DriveTrain {
     private PID pid;
 
     public DriveTrain() {
-        this.BL = InitMotors.BL;
-        this.BR = InitMotors.BR;
-        this.FL = InitMotors.FL;
-        this.FR = InitMotors.FR;
+        this.BL = InitComponents.BL;
+        this.BR = InitComponents.BR;
+        this.FL = InitComponents.FL;
+        this.FR = InitComponents.FR;
         pid = new PID(Kp, Ki, Kd, Kf);// prev GOOD p = 0.022, i = 0.00000001, d = 0.000001, f = 0
     }
 
@@ -93,29 +93,29 @@ public class DriveTrain {
     }
 
     public static void setDriveToBrakeMode(){
-        InitMotors.BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        InitMotors.BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        InitMotors.FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        InitMotors.FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        InitComponents.BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        InitComponents.BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        InitComponents.FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        InitComponents.FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public static void setDriveToFloatMode(){
-        InitMotors.BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        InitMotors.BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        InitMotors.FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        InitMotors.FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        InitComponents.BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        InitComponents.BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        InitComponents.FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        InitComponents.FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
     public void updateTelemetry(Telemetry telemetry){
         TelemetryUtils.addTitle(telemetry, "starting drive telemetry");
-        telemetry.addData("odo x", InitMotors.odometry.getPosX(DistanceUnit.CM));
-        telemetry.addData("odo y", InitMotors.odometry.getPosY(DistanceUnit.CM));
-        telemetry.addData("heading", InitMotors.odometry.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("odo x", InitComponents.odometry.getPosX(DistanceUnit.CM));
+        telemetry.addData("odo y", InitComponents.odometry.getPosY(DistanceUnit.CM));
+        telemetry.addData("heading", InitComponents.odometry.getHeading(AngleUnit.DEGREES));
         telemetry.addData("turnPow", turnPow);
-        telemetry.addData("FL pow", InitMotors.FL.getPower());
-        telemetry.addData("FR pow", InitMotors.FR.getPower());
-        telemetry.addData("BL pow", InitMotors.BL.getPower());
-        telemetry.addData("BR pow", InitMotors.BR.getPower());
+        telemetry.addData("FL pow", InitComponents.FL.getPower());
+        telemetry.addData("FR pow", InitComponents.FR.getPower());
+        telemetry.addData("BL pow", InitComponents.BL.getPower());
+        telemetry.addData("BR pow", InitComponents.BR.getPower());
         TelemetryUtils.addTitle(telemetry, "ending drive telemetry");
     }
 }

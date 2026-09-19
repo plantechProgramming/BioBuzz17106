@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class InitMotors {
+public class InitComponents {
     HardwareMap hardwareMap;
 
     public static CRServo SL,SR;
@@ -21,7 +21,7 @@ public class InitMotors {
     public static FtcDashboard dashboard;
 
     public static GoBildaPinpointDriver odometry;
-    public InitMotors(HardwareMap hardwareMap){
+    public InitComponents(HardwareMap hardwareMap){
         this.hardwareMap = hardwareMap;
     }
     public void initDriveTrain(){ // the initialisation of the drivetrain motor is in Pedro

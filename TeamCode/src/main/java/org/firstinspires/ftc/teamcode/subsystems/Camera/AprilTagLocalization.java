@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.Misc.InitMotors;
+import org.firstinspires.ftc.teamcode.Misc.InitComponents;
 import org.firstinspires.ftc.teamcode.Misc.RobotPose;
 import org.firstinspires.ftc.teamcode.Misc.Utils.Alliance;
 import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
@@ -49,7 +49,7 @@ public class AprilTagLocalization {
 
     public AprilTagLocalization(Telemetry telemetry) {
         this.telemetry = telemetry;
-        this.poseFuncs = new PoseFunctions(new RobotPose(InitMotors.odometry));
+        this.poseFuncs = new PoseFunctions(new RobotPose(InitComponents.odometry));
     }
 
     public void initProcessor(HardwareMap hardwareMap) {

@@ -7,7 +7,7 @@ import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.Misc.InitMotors;
+import org.firstinspires.ftc.teamcode.Misc.InitComponents;
 
 public class InBetween {
     CRServo sl, sr;
@@ -20,9 +20,9 @@ public class InBetween {
 
 
     public InBetween(){
-        inBetweenMotor = InitMotors.inBetweenMotor;
-        this.sl = InitMotors.SL;
-        this.sr = InitMotors.SR;
+        inBetweenMotor = InitComponents.inBetweenMotor;
+        this.sl = InitComponents.SL;
+        this.sr = InitComponents.SR;
     }
 
     public Command inFull(){
