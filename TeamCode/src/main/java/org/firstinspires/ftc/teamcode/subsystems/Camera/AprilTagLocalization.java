@@ -32,13 +32,9 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class AprilTagLocalization {
-//    Utils utils = new Utils();
-    private int id = 0;
     public AprilTagProcessor aprilTag;
-    public String Order = "NNN";
 
     double bearing = 0;
-    public double robotToTag = 0;
     public final Position CAM_POS = new Position(DistanceUnit.CM,
             0, 12, 38, 0);// need to make y bigger because y = forward of robot and z bigger because the cam is higher
     private final YawPitchRollAngles CAM_ORIENTATION = new YawPitchRollAngles(AngleUnit.DEGREES,
@@ -62,7 +58,7 @@ public class AprilTagLocalization {
                 .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
                 .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
                 .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES)
-                .setLensIntrinsics(632.1683867365514, 631.3179086745744, 321.9055255193156, 232.32756377545996) // constants chatgpt gave me for cam calibration
+                .setLensIntrinsics(632.1683867365514, 631.3179086745744, 321.9055255193156, 232.32756377545996) // constants ChatGPT gave me for cam calibration
                 .build();
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
@@ -98,59 +94,12 @@ public class AprilTagLocalization {
         ArrayList<AprilTagDetection> currentDetections = aprilTag.getDetections();
         numDetected = currentDetections.size();
         telemetry.addData("num detected", numDetected);
-//        AprilTagDetection detection = null;
-//        List<AprilTagDetection> specialDetections = new ArrayList<AprilTagDetection>();
-//
-//        // find only non special
-//        for (AprilTagDetection Detection : currentDetections) {
-//            if (Detection.id != 20 && Detection.id != 24) {
-//                detection = Detection;
-//            }
-//        }
-//        if (detection == null) {
-//            Order = "NNN";
-//        }
-//        else if (detection.id == 21) {
-//            Order = "GPP";
-//        }
-//        else if (detection.id == 22) {
-//            Order = "PGP";
-//        }
-//        else if (detection.id == 23) {
-//            Order = "PPG";
-//        }
-//        // find only special, maybe combine with prev?
-//        for (AprilTagDetection Detection : currentDetections) {
-//            if (Detection.id != 21 && Detection.id != 22 && Detection.id != 23) {
-//                specialDetections.add(Detection);
-//            }
-//        }
-//        // done to know what to remove from list
-//        if(team == "RED"){// inverted on perpse
-//            id = 20;
-//        }
-//        else if(team == "BLUE"){ // inverted on perpse
-//            id = 24;
-//        }
-//        if(specialDetections.size() == 2){
-//            for (AprilTagDetection Detection : currentDetections){
-//                if(Detection.id == id){
-//                    specialDetections.remove(Detection);
-//                    specialDetection = specialDetections.get(0);
-//                }
-//            }
-//        }
-//
-//        /*
-//         * the x, y, z vals are literally the location in the field. y is toward programming table,
-//         * x is away from obelisk, z is just up. REQUIRES TAG LIBRARY TO BE THE RIGHT ONE TO USE,
-//         * OTHERWISE JUST NULL
-//         */
-//
-//
-//        if (specialDetection != null) {
-//            robotToTag = distanceToGoal(specialDetection.robotPose, specialDetection.id);
-//        }
+
+        /*
+         * the x, y, z vals are literally the location in the field. REQUIRES TAG LIBRARY TO BE THE RIGHT ONE TO USE,
+         * OTHERWISE JUST NULL
+         */
+
         goalTag = getGoalTag(currentDetections);
         if (goalTag != null) {
             bearing = goalTag.ftcPose.bearing;
@@ -204,8 +153,8 @@ public class AprilTagLocalization {
     }
 
     public Pair<Double, Double> getRelocXY(AprilTagDetection tag) { // in pinpoint cords
-        Pose2D tagPose = PoseFunctions.getTag(); // in absolute ftc coords
-        Pair<Double, Double> xy = getXYToTag(tag); // we know what it is
+        Pose2D tagPose = PoseFunctions.getTag(); // in absolute ftc cords
+        Pair<Double, Double> xy = getXYToTag(tag);
         return new Pair<>(tagPose.getX(DistanceUnit.CM) + xy.first, tagPose.getX(DistanceUnit.CM) + xy.second);
     }
     public Pose2D getRobotPose(AprilTagDetection tag){//in pinpoint cords

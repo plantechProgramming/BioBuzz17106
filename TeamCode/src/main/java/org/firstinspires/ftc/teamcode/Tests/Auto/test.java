@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.Tests.Auto;
 
 import static com.pedropathing.ivy.commands.Commands.waitMs;
-import static com.pedropathing.ivy.groups.Groups.repeat;
 import static com.pedropathing.ivy.groups.Groups.sequential;
-import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
-import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 

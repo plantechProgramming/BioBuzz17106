@@ -44,7 +44,6 @@ public abstract class TeamAuto extends TeamOpMode {
 
 //            TelemetryUtils.updateCertainTelemtries(telemetry, follower, command.shooter);
 
-
             DataSaving.setEndPos(follower.getPose());
             schedule(command.periodic());
             Scheduler.execute();

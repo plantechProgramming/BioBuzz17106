@@ -24,7 +24,7 @@ public class InitMotors {
     public InitMotors(HardwareMap hardwareMap){
         this.hardwareMap = hardwareMap;
     }
-    public void initDriveTrain(){ // the initialisation of the drivetrain motor is in pedro
+    public void initDriveTrain(){ // the initialisation of the drivetrain motor is in Pedro
         FL = hardwareMap.get(DcMotorEx.class, "FL");
         FR = hardwareMap.get(DcMotorEx.class, "FR");
         BL = hardwareMap.get(DcMotorEx.class, "BL");

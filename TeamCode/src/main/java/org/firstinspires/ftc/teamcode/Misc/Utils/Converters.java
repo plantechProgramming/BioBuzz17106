@@ -21,7 +21,7 @@ public class Converters {
         return new Pose2D(DistanceUnit.CM, newx, newy, AngleUnit.DEGREES, hed);
     }
 
-    // the following function doesn't work if you want to do the conversion use pedro's built in coordinate system convertors
+    // the following function doesn't work if you want to do the conversion use Pedro's built-in coordinate system convertors
 //    public static Pose2D pedroToFTC(Pose pose){
 //        double scaledX = DistanceUnit.CM.fromInches(pose.getX());
 //        double scaledY = DistanceUnit.CM.fromInches(pose.getY());
