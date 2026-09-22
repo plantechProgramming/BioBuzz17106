@@ -1,21 +1,24 @@
 package org.firstinspires.ftc.teamcode.auto.autos.paths;
 
-import com.pedropathing.geometry.PedroCoordinates;
-import com.pedropathing.geometry.Pose;
-import com.pedropathing.math.MathFunctions;
+
+import android.util.Pair;
+
+import com.pedropathing.api.PoseFactory;
+import com.pedropathing.math.Pose;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Points {
-    // blue points
-
-
-    public void setPointsToRed() {
+    protected PoseFactory poseFactory = PoseFactory.degrees(); // .degrees meaning that pose's angle will be in deg
+    private Map<String, Pose> points = new HashMap<>();
+    public void setPoints(){ // blue points
+//        poses.put("start", poseFactory.of(20, 20, 180));
     }
 
-
-    private Pose Mymirror(Pose pPose) {
-        Pose k = pPose;
-        return new Pose(141.5 - k.getX(), k.getY()-2, MathFunctions.normalizeAngle(Math.PI - k.getHeading()), PedroCoordinates.INSTANCE);
+    public Pose get(String pointName){
+        return points.get(pointName);
     }
-
 
 }

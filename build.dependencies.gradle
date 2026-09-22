@@ -26,8 +26,8 @@ dependencies {
     implementation 'com.acmerobotics.dashboard:dashboard:0.5.1'
 
     // pedroPathing
-    implementation 'com.pedropathing:ftc:2.0.6'
-    implementation 'com.pedropathing:telemetry:1.0.0'
+    implementation 'com.pedropathing:revhub:3.0.1'
+    implementation 'com.pedropathing:tuning:1.0.1'
     implementation 'com.pedropathing:ivy:1.0.0'
 
     // panels

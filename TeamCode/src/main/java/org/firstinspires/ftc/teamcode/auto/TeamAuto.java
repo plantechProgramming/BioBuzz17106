@@ -19,37 +19,27 @@ public abstract class TeamAuto extends TeamOpMode {
     protected Paths path;
     protected Follower follower;
     protected Boolean isFar;
-    Extras extras = new Extras();
-    ElapsedTime elapsedTime;
 
     @Override
     public void run(){
-        extras.startHistogram(0.1);
-        elapsedTime = new ElapsedTime();
         path = new Paths();
-        follower = Constants.createFollower(hardwareMap);
-
+        follower = Constants.create(hardwareMap);
         if(isFar){
-//            follower.setStartingPose(path.points.startPoseFar);
+//            follower.setPose(path.points.get("startFar"));
         }
         else{
-//            follower.setStartingPose(path.points.startPose);
+//            follower.setPose(path.points.get("start"));
         }
         command = new AutoCommands(follower);
-        path.buildPaths(follower);
-
         schedule(autoRoutine());
         while (opModeIsActive()) {
-//            elapsedTime.reset();
-
 //            TelemetryUtils.updateCertainTelemtries(telemetry, follower, command.shooter);
-
-            DataSaving.setEndPos(follower.getPose());
+            DataSaving.setEndPos(follower.pose());
             schedule(command.periodic());
+
             Scheduler.execute();
             follower.update();
             telemetry.update();
-//            extras.updateHistogram(elapsedTime.milliseconds());
         }
     }
 

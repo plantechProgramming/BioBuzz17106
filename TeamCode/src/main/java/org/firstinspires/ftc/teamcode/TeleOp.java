@@ -32,8 +32,8 @@ public class TeleOp extends TeamOpMode {
     Follower follower;
 
     @Override
-    protected void postInit() {
-        follower = Constants.createFollower(hardwareMap);
+    public void postInit() {
+        follower = Constants.create(hardwareMap);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class TeleOp extends TeamOpMode {
         boolean activatedHold = false;
         boolean holdInitialized = false;
 
-        odometry.setPosition(PoseConverter.poseToPose2D(DataSaving.getEndPos(), InvertedFTCCoordinates.INSTANCE));
+//        odometry.setPosition(PoseConverter.poseToPose2D(DataSaving.getEndPos(), InvertedFTCCoordinates.INSTANCE));
         odometry.update();
         Pose lastPos = follower.getPose();
         DriveTrain.setDriveToBrakeMode();

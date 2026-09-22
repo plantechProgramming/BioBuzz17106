@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.auto.autos.paths.Paths;
 public class CloseStillAuto extends TeamOpMode {
 
     @Override
-    public  void postInit(){
+    public void postInit(){
         Alliance.set(Alliance.BLUE);
     }
     @Override
@@ -22,6 +22,6 @@ public class CloseStillAuto extends TeamOpMode {
     @Override
     protected void end() {
         Paths paths = new Paths();
-//        DataSaving.setEndPos(paths.points.startPose);
+//        DataSaving.setEndPos(paths.points.get("start"));
     }
 }
