@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Tests.TeleOp;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
 
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.dashboardTelemetry;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.ivy.Scheduler;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
