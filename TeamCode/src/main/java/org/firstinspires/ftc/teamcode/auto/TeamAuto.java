@@ -22,6 +22,7 @@ public abstract class TeamAuto extends TeamOpMode {
 
     @Override
     public void run(){
+        Scheduler.reset();
         path = new Paths();
         follower = Constants.create(hardwareMap);
         if(isFar){
@@ -30,6 +31,7 @@ public abstract class TeamAuto extends TeamOpMode {
         else{
 //            follower.setPose(path.points.get("start"));
         }
+        follower.update();
         command = new AutoCommands(follower);
         schedule(autoRoutine());
         while (opModeIsActive()) {

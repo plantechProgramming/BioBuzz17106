@@ -6,10 +6,6 @@ import static org.firstinspires.ftc.teamcode.Misc.InitComponents.odometry;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.ftc.InvertedFTCCoordinates;
-import com.pedropathing.ftc.PoseConverter;
-import com.pedropathing.geometry.BezierLine;
-import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -33,6 +29,7 @@ public class TeleOp extends TeamOpMode {
 
     @Override
     public void postInit() {
+        Scheduler.reset();
         follower = Constants.create(hardwareMap);
     }
 
@@ -54,7 +51,7 @@ public class TeleOp extends TeamOpMode {
 
 //        odometry.setPosition(PoseConverter.poseToPose2D(DataSaving.getEndPos(), InvertedFTCCoordinates.INSTANCE));
         odometry.update();
-        Pose lastPos = follower.getPose();
+//        Pose lastPos = follower.getPose();
         DriveTrain.setDriveToBrakeMode();
 
         while (opModeIsActive()) {
@@ -73,17 +70,16 @@ public class TeleOp extends TeamOpMode {
                 if(!holdInitialized){
                     DriveTrain.setDriveToFloatMode();
                     holdInitialized = true;
-                    lastPos = follower.getPose();
-
+//                    lastPos = follower.getPose();
                 }
-                follower.holdPoint(lastPos, false);
+//                follower.holdPoint(lastPos, false);
                 activatedHold = true;
             }
             else {
                 holdInitialized = false;
                 if(activatedHold){
                     activatedHold = false;
-                    follower.followPath(new Path(new BezierLine(follower.getPose(), follower.getPose())), false); // need to clean
+//                    follower.followPath(new Path(new BezierLine(follower.getPose(), follower.getPose())), false); // need to clean
                     DriveTrain.setDriveToBrakeMode();
                 }
                 if(turning){

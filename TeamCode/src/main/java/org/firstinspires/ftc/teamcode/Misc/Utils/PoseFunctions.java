@@ -2,11 +2,8 @@ package org.firstinspires.ftc.teamcode.Misc.Utils;
 
 import android.util.Pair;
 
-import com.pedropathing.ftc.FTCCoordinates;
-import com.pedropathing.ftc.InvertedFTCCoordinates;
-import com.pedropathing.ftc.PoseConverter;
-import com.pedropathing.geometry.PedroCoordinates;
-import com.pedropathing.geometry.Pose;
+import com.pedropathing.math.Pose;
+import com.pedropathing.utils.Angle;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -116,12 +113,16 @@ public class PoseFunctions {
     }
 
     public static Pose2D poseToPose2D(Pose pose){
-        Pose2D pose2D = PoseConverter.poseToPose2D(pose, InvertedFTCCoordinates.INSTANCE);
-        return new Pose2D(DistanceUnit.CM, pose2D.getX(DistanceUnit.CM), pose2D.getY(DistanceUnit.CM),
-                AngleUnit.DEGREES, pose2D.getHeading(AngleUnit.DEGREES));
+        return new Pose2D(DistanceUnit.INCH, 72 - pose.y(), pose.x() - 72,
+                AngleUnit.RADIANS, Angle.normalizeSigned(pose.heading() + Math.PI / 2)); // pedro automatically normalises the heading to be between 0 - 2*Pi
     }
     public static Pose pose2DToPose(Pose2D pose2D){
-        return PoseConverter.pose2DToPose(pose2D, FTCCoordinates.INSTANCE).getAsCoordinateSystem(PedroCoordinates.INSTANCE);
+        double xFtcInches = pose2D.getX(DistanceUnit.INCH);
+        double yFtcInches = pose2D.getY(DistanceUnit.INCH);
+        double headingFtcRad = pose2D.getHeading(AngleUnit.RADIANS);
+
+        return new Pose(yFtcInches + 72, 72 - xFtcInches,
+                headingFtcRad - Math.PI / 2); // pedro automatically normalises the heading to be between 0 - 2*Pi
     }
 
     public void updateTelemetry(Telemetry telemetry){

@@ -34,10 +34,9 @@ public class testPedro extends LinearOpMode {
         extras.startHistogram(0.1);
         Alliance.set(Alliance.BLUE);
         path = new Paths();
-        follower = Constants.createFollower(hardwareMap);
+        follower = Constants.create(hardwareMap);
 
 //        follower.setStartingPose(path.points.startPoseFar);
-        path.buildPaths(follower);
         waitForStart();
         while (opModeIsActive()){
             elapsedTime.reset();
@@ -47,9 +46,9 @@ public class testPedro extends LinearOpMode {
                 autonomousPathUpdate();
 
             // Feedback to Driver Hub for debugging
-            telemetry.addData("x", follower.getPose().getX());
-            telemetry.addData("y", follower.getPose().getY());
-            telemetry.addData("heading", follower.getPose().getHeading());
+            telemetry.addData("x", follower.pose().x());
+            telemetry.addData("y", follower.pose().y());
+            telemetry.addData("heading", follower.pose().heading());
             telemetry.update();
             extras.updateHistogram(elapsedTime.milliseconds());
         }

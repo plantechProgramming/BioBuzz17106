@@ -8,10 +8,8 @@ import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.BezierLine;
-import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Command;
-import com.pedropathing.paths.PathChain;
+import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
 import org.firstinspires.ftc.teamcode.auto.autos.paths.Paths;
@@ -88,7 +86,7 @@ public class AutoCommands{
         );
     }
 
-    public Command score(PathChain path){
+    public Command score(Path path){
         return sequential(
                 follow(follower, path),
                 shoot(),
@@ -116,7 +114,7 @@ public class AutoCommands{
                 inBetween.stop()
         );
     }
-    public Command scoreWithDelay(PathChain path, double delay){
+    public Command scoreWithDelay(Path path, double delay){
         return sequential(
                 follow(follower, path),
                 shoot(),
@@ -124,22 +122,22 @@ public class AutoCommands{
         );
     }
 
-    public Command intake(PathChain grabPath){
+    public Command intake(Path grabPath){
         return sequential(
                 take(),
                 follow(follower, grabPath),
                 stopAll()
         );
     }
-    public Command intakeWithSpeed(PathChain grabPath, double speed){
+    public Command intakeWithSpeed(Path grabPath, double speed){
         return sequential(
                 take(),
-                follow(follower, grabPath, speed),
+//                follow(follower, grabPath, speed), // you cant do this in the new ivy version so you will have to put the limit on the path
                 stopAll()
         );
     }
 
-    public Command intakeAndShoot(PathChain grabAndShootPath){
+    public Command intakeAndShoot(Path grabAndShootPath){
         return sequential(
                 take(),
                 follow(follower, grabAndShootPath),

@@ -31,10 +31,10 @@ public class TelemetryUtils {
     }
 
     public static void updatePedroTelemetry(Telemetry telemetry, Follower follower){
-        TelemetryUtils.addTitle(telemetry, "starting pedro telemetry");
-        telemetry.addData("robot x", follower.getPose().getX()); // in inches
-        telemetry.addData("robot y", follower.getPose().getY()); // in inches
-        telemetry.addData("robot heading(degrees)", follower.getPose().getY()); // in deg
-        TelemetryUtils.addTitle(telemetry, "ending pedro telemetry");
+        TelemetryUtils.addTitle(telemetry, "starting Pedro telemetry");
+        telemetry.addData("robot x", follower.pose().x()); // in inches
+        telemetry.addData("robot y", follower.pose().y()); // in inches
+        telemetry.addData("robot heading(degrees)", Math.toDegrees(follower.pose().heading())); // in deg
+        TelemetryUtils.addTitle(telemetry, "ending Pedro telemetry");
     }
 }

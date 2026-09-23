@@ -22,6 +22,7 @@ public class testSubsystems extends TeamOpMode {
 
     @Override
     public void postInit() {
+        Scheduler.reset();
         command = new AutoCommands();
     }
 

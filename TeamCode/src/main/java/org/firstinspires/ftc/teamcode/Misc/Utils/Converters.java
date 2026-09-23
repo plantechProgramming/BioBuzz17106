@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Misc.Utils;
 
-import com.pedropathing.geometry.Pose;
+import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -8,9 +8,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
 public class Converters {
     public static Pose2D PedroPoseConverter(Pose pose){ // from pedro cords to the old bad Pinpoint cords
-        double x = pose.getX();
-        double y = pose.getY();
-        double hed = Math.toDegrees(pose.getHeading());
+        double x = pose.x();
+        double y = pose.y();
+        double hed = Math.toDegrees(pose.heading());
         double lenField = 365.76; // 144 inch to cm
         double newx = ((-lenField/144)*x)+lenField/2;
         double newy = ((-lenField/144)*y)+lenField/2;

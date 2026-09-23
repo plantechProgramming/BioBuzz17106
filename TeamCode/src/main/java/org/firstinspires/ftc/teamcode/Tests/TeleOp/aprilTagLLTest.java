@@ -23,7 +23,7 @@ public class aprilTagLLTest extends TeamOpMode {
     @Override
     public void postInit(){
         Alliance.set(Alliance.RED);
-        Follower follower = Constants.createFollower(hardwareMap); // this line and the next line initialises the drivetrain motors
+        Follower follower = Constants.create(hardwareMap); // this line and the next line initialises the drivetrain motors
         follower.update();
         odometry.resetPosAndIMU();
     }

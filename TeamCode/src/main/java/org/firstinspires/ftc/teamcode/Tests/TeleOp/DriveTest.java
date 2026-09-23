@@ -19,7 +19,7 @@ public class DriveTest extends TeamOpMode {
 
     @Override
     protected void postInit(){
-        Follower follower = Constants.createFollower(hardwareMap); // this line and the next line initialises the drivetrain motors
+        Follower follower = Constants.create(hardwareMap); // this line and the next line initialises the drivetrain motors
         follower.update();
         odometry.resetPosAndIMU();
         sleep(250);
