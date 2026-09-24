@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Tests.TeleOp;
 
 import static org.firstinspires.ftc.teamcode.Misc.InitComponents.ll;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.odometry;
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
@@ -25,7 +25,7 @@ public class aprilTagLLTest extends TeamOpMode {
         Alliance.set(Alliance.RED);
         Follower follower = Constants.create(hardwareMap); // this line and the next line initialises the drivetrain motors
         follower.update();
-        odometry.resetPosAndIMU();
+        pinpoint.resetPosAndIMU();
     }
 
     @Override
@@ -40,12 +40,12 @@ public class aprilTagLLTest extends TeamOpMode {
             try{
 //                latestLLPos = limelight.getLatestBotpose();
 //                latestFilteredLLPos = limelight.getFilteredBotPose();
-//                telemetry.addData("XY field coords(moved)", limelight.getAbsoluteDetectionResult(odometry.getPosition()));
-//                telemetry.addData("XY field coords(not moved)", limelight.getRotatedDetectionResult(odometry.getHeading(AngleUnit.DEGREES)));
+//                telemetry.addData("XY field coords(moved)", limelight.getAbsoluteDetectionResult(pinpoint.getPosition()));
+//                telemetry.addData("XY field coords(not moved)", limelight.getRotatedDetectionResult(pinpoint.getHeading(AngleUnit.DEGREES)));
 //                telemetry.addData("XY robot coords", limelight.getDetectionResultAsPose2D());
-                telemetry.addData("odo heading", odometry.getHeading(AngleUnit.DEGREES));
-                telemetry.addData("odo x", odometry.getPosX(DistanceUnit.CM));
-                telemetry.addData("odo y", odometry.getPosY(DistanceUnit.CM));
+                telemetry.addData("odo heading", pinpoint.getHeading(AngleUnit.DEGREES));
+                telemetry.addData("odo x", pinpoint.getPosX(DistanceUnit.CM));
+                telemetry.addData("odo y", pinpoint.getPosY(DistanceUnit.CM));
 //                new DashboardCan vas()
 //                        .addRobotAsCircle(latestFilteredLLPos)
 //                        .addRobotAsCircle(PoseFunctions.pose3DToPose2D(latestLLPos, AngleUnit.DEGREES), "#00FF00")
@@ -58,7 +58,7 @@ public class aprilTagLLTest extends TeamOpMode {
             telemetry.update();
 //            schedule(commands.periodic());
             Scheduler.execute();
-            odometry.update();
+            pinpoint.update();
 
         }
     }

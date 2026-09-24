@@ -49,7 +49,7 @@ public class AprilTagLocalization {
 
     public AprilTagLocalization(Telemetry telemetry) {
         this.telemetry = telemetry;
-        this.poseFuncs = new PoseFunctions(new RobotPose(InitComponents.odometry));
+        this.poseFuncs = new PoseFunctions(new RobotPose(InitComponents.pinpoint));
     }
 
     public void initProcessor(HardwareMap hardwareMap) {

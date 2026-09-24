@@ -24,7 +24,7 @@ public class Shooter {
         shootMotor = InitComponents.shootMotor;
         shootMotorOp = InitComponents.shootMotorOp;
         shooterVel = new GetVelocity(shootMotor, 0.1);
-        poseFuncs = new PoseFunctions(new RobotPose(InitComponents.odometry));
+        poseFuncs = new PoseFunctions(new RobotPose(InitComponents.pinpoint));
     }
 
     double wantedNaivePow = 0;

@@ -20,7 +20,7 @@ public class InitComponents {
     public static Limelight3A ll;
     public static FtcDashboard dashboard;
 
-    public static GoBildaPinpointDriver odometry;
+    public static GoBildaPinpointDriver pinpoint;
     public InitComponents(HardwareMap hardwareMap){
         this.hardwareMap = hardwareMap;
     }
@@ -57,7 +57,7 @@ public class InitComponents {
     }
     
     public void initPinpoint(){ // the initialisation of the pinpoint is in pedro
-        odometry = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
     }
     
     public void initDashboard(){

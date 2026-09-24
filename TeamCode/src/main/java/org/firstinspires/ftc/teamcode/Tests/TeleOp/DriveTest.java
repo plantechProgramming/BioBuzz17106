@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Tests.TeleOp;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.odometry;
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Scheduler;
@@ -21,7 +21,7 @@ public class DriveTest extends TeamOpMode {
     protected void postInit(){
         Follower follower = Constants.create(hardwareMap); // this line and the next line initialises the drivetrain motors
         follower.update();
-        odometry.resetPosAndIMU();
+        pinpoint.resetPosAndIMU();
         sleep(250);
     }
     @Override
@@ -40,15 +40,15 @@ public class DriveTest extends TeamOpMode {
             gamepadTurn = gamepad1.right_stick_x;
             gamepadDrift = gamepad1.left_stick_x;
 
-            botHeading = odometry.getHeading(AngleUnit.DEGREES);
+            botHeading = pinpoint.getHeading(AngleUnit.DEGREES);
             schedule(driveTrain.drive(gamepadForward, gamepadDrift, gamepadTurn, botHeading+90, 1));//TODO: change for RED  -90
             driveTrain.updateTelemetry(telemetry);
             new DashboardCanvas()
-                    .addRobotAsCircle(odometry.getPosition())
+                    .addRobotAsCircle(pinpoint.getPosition())
                     .draw();
             telemetry.update();
             Scheduler.execute();
-            odometry.update();
+            pinpoint.update();
         }
     }
 

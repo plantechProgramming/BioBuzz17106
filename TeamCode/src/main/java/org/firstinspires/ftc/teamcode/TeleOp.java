@@ -2,7 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.odometry;
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
@@ -38,7 +39,7 @@ public class TeleOp extends TeamOpMode {
         DriveTrain driveTrain = new DriveTrain();
         ElapsedTime elapsedTime = new ElapsedTime();
         AutoCommands commands = new AutoCommands();
-        PoseFunctions poseFunctions = new PoseFunctions(new RobotPose(odometry));
+        PoseFunctions poseFunctions = new PoseFunctions(new RobotPose(pinpoint));
 
         double gamepadForward; //-1 to 1
         double gamepadTurn;
@@ -49,8 +50,8 @@ public class TeleOp extends TeamOpMode {
         boolean activatedHold = false;
         boolean holdInitialized = false;
 
-//        odometry.setPosition(PoseConverter.poseToPose2D(DataSaving.getEndPos(), InvertedFTCCoordinates.INSTANCE));
-        odometry.update();
+//        pinpoint.setPosition(PoseConverter.poseToPose2D(DataSaving.getEndPos(), InvertedFTCCoordinates.INSTANCE));
+        pinpoint.update();
 //        Pose lastPos = follower.getPose();
         DriveTrain.setDriveToBrakeMode();
 
@@ -63,7 +64,7 @@ public class TeleOp extends TeamOpMode {
             shooting = gamepad1.right_bumper;
             turning = gamepad1.left_bumper;
 
-            botHeading = odometry.getHeading(AngleUnit.DEGREES);
+            botHeading = pinpoint.getHeading(AngleUnit.DEGREES);
 
             if(shooting){
                 schedule(commands.shoot());
@@ -107,12 +108,12 @@ public class TeleOp extends TeamOpMode {
 
 
             if(gamepad1.back) {
-                odometry.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.DEGREES, 0));
+                pinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.DEGREES, 0));
             }
 
             TelemetryUtils.updateCertainTelemtries(telemetry, driveTrain, commands.shooter, poseFunctions);
             new DashboardCanvas()
-                    .addPreciseRobot(odometry.getPosition())
+                    .addPreciseRobot(pinpoint.getPosition())
                     .draw();
             telemetry.update();
 

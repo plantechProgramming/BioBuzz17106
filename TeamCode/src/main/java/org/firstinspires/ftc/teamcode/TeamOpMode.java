@@ -19,9 +19,9 @@ public abstract class TeamOpMode extends LinearOpMode {
 
     private void initAll(){
         initMotors.initDriveTrain();
-        initMotors.initIntake();
-        initMotors.initInBetween();
-        initMotors.initShooter();
+//        initMotors.initIntake();
+//        initMotors.initInBetween();
+//        initMotors.initShooter();
         initMotors.initPinpoint();
         initMotors.initDashboard();
         initMotors.initLL();

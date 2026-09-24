@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static com.pedropathing.ivy.groups.Groups.parallel;
 
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.commands.Commands;
@@ -108,14 +110,14 @@ public class DriveTrain {
 
     public void updateTelemetry(Telemetry telemetry){
         TelemetryUtils.addTitle(telemetry, "starting drive telemetry");
-        telemetry.addData("odo x", InitComponents.odometry.getPosX(DistanceUnit.CM));
-        telemetry.addData("odo y", InitComponents.odometry.getPosY(DistanceUnit.CM));
-        telemetry.addData("heading", InitComponents.odometry.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("odo x", pinpoint.getPosX(DistanceUnit.CM));
+        telemetry.addData("odo y", pinpoint.getPosY(DistanceUnit.CM));
+        telemetry.addData("heading", pinpoint.getHeading(AngleUnit.DEGREES));
         telemetry.addData("turnPow", turnPow);
-        telemetry.addData("FL pow", InitComponents.FL.getPower());
-        telemetry.addData("FR pow", InitComponents.FR.getPower());
-        telemetry.addData("BL pow", InitComponents.BL.getPower());
-        telemetry.addData("BR pow", InitComponents.BR.getPower());
+        telemetry.addData("FL pow", FL.getPower());
+        telemetry.addData("FR pow", FR.getPower());
+        telemetry.addData("BL pow", BL.getPower());
+        telemetry.addData("BR pow", BR.getPower());
         TelemetryUtils.addTitle(telemetry, "ending drive telemetry");
     }
 }
