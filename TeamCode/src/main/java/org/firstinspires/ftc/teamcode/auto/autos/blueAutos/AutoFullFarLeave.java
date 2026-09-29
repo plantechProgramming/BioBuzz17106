@@ -14,7 +14,7 @@ public class AutoFullFarLeave extends TeamAuto {
     @Override
     public void postInit() {
         Alliance.set(Alliance.BLUE);
-        isFar = true;
+//        isFar = true;
     }
 
     @Override

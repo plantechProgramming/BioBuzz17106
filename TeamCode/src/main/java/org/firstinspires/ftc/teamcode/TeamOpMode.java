@@ -36,7 +36,7 @@ public abstract class TeamOpMode extends LinearOpMode {
         initMotors = new InitComponents(hardwareMap);
         initAll();
         initThings();
-        init();
+        postInit();
         waitForStart();
 
         if (opModeIsActive()) {

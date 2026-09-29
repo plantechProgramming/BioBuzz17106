@@ -23,17 +23,17 @@ public class AutoCommands{
     Limelight limelight;
 
     public AutoCommands(Follower follower) {
-        shooter = new Shooter();
-        intake = new Intake();
-        inBetween = new InBetween();
+//        shooter = new Shooter();
+//        intake = new Intake();
+//        inBetween = new InBetween();
         this.follower = follower;
         limelight = new Limelight();
     }
 
     public AutoCommands(){
-        shooter = new Shooter();
-        intake = new Intake();
-        inBetween = new InBetween();
+//        shooter = new Shooter();
+//        intake = new Intake();
+//        inBetween = new InBetween();
         limelight = new Limelight();
     }
 

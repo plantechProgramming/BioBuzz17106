@@ -13,6 +13,10 @@ public class TelemetryUtils {
         telemetry.addLine(dashes + title + dashes);
     }
 
+    public static void updateCertainTelemtries(Telemetry telemetry, Follower follower)
+    {
+        updatePedroTelemetry(telemetry, follower);
+    }
     public static void updateCertainTelemtries(Telemetry telemetry, Follower follower, Shooter shooter){
         updatePedroTelemetry(telemetry, follower);
         shooter.updateTelemetry(telemetry);

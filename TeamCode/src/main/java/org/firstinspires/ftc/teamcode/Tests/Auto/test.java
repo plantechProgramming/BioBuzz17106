@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode.Tests.Auto;
 
+import static com.pedropathing.api.Paths.line;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
 import static org.firstinspires.ftc.teamcode.Misc.InitComponents.ll;
 
 import com.pedropathing.ivy.Command;
+import com.pedropathing.math.Pose;
+import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Misc.Utils.Alliance;
@@ -16,7 +20,7 @@ public class test extends TeamAuto {
 
     @Override
     public void postInit(){
-        isFar = true;
+//        isFar = true;
         Alliance.set(Alliance.BLUE);
         ll.start();
     }
@@ -24,8 +28,8 @@ public class test extends TeamAuto {
     @Override
     public Command autoRoutine() {
         return sequential(
-                command.startShooter(true),
-                waitMs(3000)
+//                follow(follower,
+//                        line(new Pose(72, 72, Math.toRadians(0)), new Pose(0,0,Math.toRadians(0))).constant(Math.toRadians(0)))
 //                repeat(sequential(
 //                        command.goToDetectedBlob(),
 //                        command.scoreDetectedBlob(path),
