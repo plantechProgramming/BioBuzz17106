@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 
 public class InitComponents {
     HardwareMap hardwareMap;
@@ -18,6 +19,7 @@ public class InitComponents {
     public static DcMotorEx inBetweenMotor, shootMotor, shootMotorOp,intakeMotor; //odometry is for testing purposes
     public static Telemetry dashboardTelemetry;
     public static Limelight3A ll;
+    public static CameraName logiCam;
     public static FtcDashboard dashboard;
 
     public static GoBildaPinpointDriver pinpoint;
@@ -69,5 +71,9 @@ public class InitComponents {
         ll = hardwareMap.get(Limelight3A.class, "LimeLight");
         ll.setPollRateHz(100); // This sets how often we ask Limelight for data (100 times per second)
         ll.pipelineSwitch(2);
+    }
+
+    public void initLogiCam(){
+        logiCam = hardwareMap.get(CameraName.class, "webcam");
     }
 }

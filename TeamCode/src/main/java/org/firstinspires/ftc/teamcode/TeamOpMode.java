@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.Misc.InitComponents.dashboardTelemetry;
 import static org.firstinspires.ftc.teamcode.Misc.InitComponents.ll;
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.logiCam;
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
 
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
@@ -11,6 +13,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.teamcode.Misc.InitComponents;
 
 
@@ -25,11 +28,11 @@ public abstract class TeamOpMode extends LinearOpMode {
         initMotors.initPinpoint();
         initMotors.initDashboard();
         initMotors.initLL();
+        initMotors.initLogiCam();
     }
 
     private void initThings(){ // random things that need to be initialized here
         telemetry = new MultipleTelemetry(telemetry, dashboardTelemetry);
-        InitComponents.dashboard.startCameraStream(ll, 60);
     }
     @Override
     public void runOpMode() throws InterruptedException  {
@@ -37,6 +40,7 @@ public abstract class TeamOpMode extends LinearOpMode {
         initAll();
         initThings();
         postInit();
+        pinpoint.resetPosAndIMU();
         waitForStart();
 
         if (opModeIsActive()) {

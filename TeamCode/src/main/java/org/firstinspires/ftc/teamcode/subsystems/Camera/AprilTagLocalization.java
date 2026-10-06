@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems.Camera;
 
 
+import static com.pedropathing.ivy.Scheduler.schedule;
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.ll;
+import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
+
 import android.util.Pair;
 import android.util.Size;
 
@@ -22,7 +26,9 @@ import org.firstinspires.ftc.teamcode.Misc.RobotPose;
 import org.firstinspires.ftc.teamcode.Misc.Utils.Alliance;
 import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
 import org.firstinspires.ftc.teamcode.Misc.Utils.filters.LowPass;
+import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -36,10 +42,9 @@ public class AprilTagLocalization {
 
     double bearing = 0;
     public final Position CAM_POS = new Position(DistanceUnit.CM,
-            0, 12, 38, 0);// need to make y bigger because y = forward of robot and z bigger because the cam is higher
+            21, 22, 34, 0);// need to make y bigger because y = forward of robot and z bigger because the cam is higher
     private final YawPitchRollAngles CAM_ORIENTATION = new YawPitchRollAngles(AngleUnit.DEGREES,
-            0, -11.5, 0, 0); // need to make pitch smaller because -pitch = cam facing up
-    public AprilTagDetection specialDetection = null;
+            0, -90, 0, 0); // need to make pitch smaller because -pitch = cam facing up
     public int numDetected = 0;
     public VisionPortal visionPortal;
     public AprilTagDetection goalTag = null;
@@ -52,7 +57,7 @@ public class AprilTagLocalization {
         this.poseFuncs = new PoseFunctions(new RobotPose(InitComponents.pinpoint));
     }
 
-    public void initProcessor(HardwareMap hardwareMap) {
+    public void initProcessor() {
         aprilTag = new AprilTagProcessor.Builder()
                 .setCameraPose(CAM_POS, CAM_ORIENTATION)
                 .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
@@ -62,11 +67,13 @@ public class AprilTagLocalization {
                 .build();
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(hardwareMap.get(CameraName.class, "webcam"));
+        builder.setCamera(InitComponents.logiCam);
 
         builder.addProcessor(aprilTag);
         builder.setCameraResolution(new Size(640, 480));
         visionPortal = builder.build();
+        InitComponents.dashboard.startCameraStream(visionPortal, 60);
+
     }
 
     public void applySettings() {
@@ -89,8 +96,8 @@ public class AprilTagLocalization {
         // contrast, saturation and brightness are saved in the cam?
     }
 
+    DriveTrain driveTrain = new DriveTrain();
     public void detectTags() {
-
         ArrayList<AprilTagDetection> currentDetections = aprilTag.getDetections();
         numDetected = currentDetections.size();
         telemetry.addData("num detected", numDetected);
@@ -99,13 +106,19 @@ public class AprilTagLocalization {
          * the x, y, z vals are literally the location in the field. REQUIRES TAG LIBRARY TO BE THE RIGHT ONE TO USE,
          * OTHERWISE JUST NULL
          */
-
-        goalTag = getGoalTag(currentDetections);
-        if (goalTag != null) {
-            bearing = goalTag.ftcPose.bearing;
+        double bearing = 0;
+        for(AprilTagDetection detection : currentDetections){
+            if(detection instanceof AprilTagSingleDetection){
+                AprilTagSingleDetection singleDetection = (AprilTagSingleDetection)detection;
+                bearing = singleDetection.ftcPose.bearing;
+                telemetry.addData("single bearing", bearing);
+            }
+            else if(detection instanceof AprilTagClusterDetection){
+                AprilTagClusterDetection clusterDetection = (AprilTagClusterDetection)detection;
+                bearing = clusterDetection.ftcPose.bearing;
+                telemetry.addData("cluster bearing", bearing);
+            }
         }
-        telemetry.addData("bearing", bearing);
-        telemetry.addData("goalTag", goalTag);
     }
 
     public AprilTagDetection getGoalTag(ArrayList<AprilTagDetection> detectedTags) {
