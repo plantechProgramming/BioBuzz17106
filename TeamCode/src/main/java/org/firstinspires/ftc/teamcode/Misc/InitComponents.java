@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,8 +16,8 @@ public class InitComponents {
     HardwareMap hardwareMap;
 
     public static CRServo SL,SR;
-    public static DcMotorEx FL, FR, BL, BR; //odometry is for testing purposes
-    public static DcMotorEx inBetweenMotor, shootMotor, shootMotorOp,intakeMotor; //odometry is for testing purposes
+    public static DcMotorEx FL, FR, BL, BR;
+    public static DcMotorEx inBetweenMotor, shootMotor, shootMotorOp,intakeMotor, turretMotor;
     public static Telemetry dashboardTelemetry;
     public static Limelight3A ll;
     public static CameraName logiCam;
@@ -56,6 +57,11 @@ public class InitComponents {
         shootMotor = hardwareMap.get(DcMotorEx.class, "ShooterClose");
         shootMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         shootMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    public void initTurret(){
+        turretMotor = hardwareMap.get(DcMotorEx.class, "turret");
+        turretMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
     }
     
     public void initPinpoint(){ // the initialisation of the pinpoint is in pedro

@@ -7,15 +7,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class RobotPose { // everything is in CM
 
-    GoBildaPinpointDriver odometry;
+    GoBildaPinpointDriver pinpoint;
 
-    public RobotPose(GoBildaPinpointDriver odometry){
-        this.odometry = odometry;
+    public RobotPose(GoBildaPinpointDriver pinpoint){
+        this.pinpoint = pinpoint;
     }
 
     public double getX(){
-        if(odometry != null){
-            return odometry.getPosX(DistanceUnit.CM);
+        if(pinpoint != null){
+            return pinpoint.getPosX(DistanceUnit.CM);
         }
         else{
             throw new IllegalArgumentException("No X pos given");
@@ -23,8 +23,8 @@ public class RobotPose { // everything is in CM
     }
 
     public double getY(){
-        if(odometry != null){
-            return odometry.getPosY(DistanceUnit.CM);
+        if(pinpoint != null){
+            return pinpoint.getPosY(DistanceUnit.CM);
         }
         else{
             throw new IllegalArgumentException("No Y pos given");
@@ -32,8 +32,8 @@ public class RobotPose { // everything is in CM
     }
 
     public double getHeading(){
-        if(odometry != null){
-            return odometry.getHeading(AngleUnit.DEGREES);
+        if(pinpoint != null){
+            return pinpoint.getHeading(AngleUnit.DEGREES);
         }
         else{
             throw new IllegalArgumentException("No heading given");
