@@ -33,11 +33,9 @@ public class aprilTagLogiCamTest extends TeamOpMode {
     @Override
     public void postInit(){
         Alliance.set(Alliance.BLUE);
-        Follower follower = Constants.create(hardwareMap);
     }
     @Override
     public void run() {
-        DriveTrain driveTrain = new DriveTrain();
         tagLocalization.initProcessor();
         while (tagLocalization.visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING){
             sleep(20);
