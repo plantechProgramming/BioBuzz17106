@@ -30,7 +30,9 @@ public class Turret {
         poseFunctions = new PoseFunctions(new RobotPose(pinpoint));
     }
     public void runToTick(int tick){
-        if (!isInNoReachZone(tickToDeg(tick))) {
+        telemetry.addData("turret wanted deg", tickToDeg(tick));
+        telemetry.addData("turret wanted rot deg", getRotatedDeg(tickToDeg(tick)));
+        if (!isInNoReachZone(getRotatedDeg(tickToDeg(tick)))) {
             turret.setTargetPosition(getRotatedTick(tick));
             turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             turret.setVelocity(turret.getMotorType().getAchieveableMaxTicksPerSecond());

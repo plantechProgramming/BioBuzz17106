@@ -46,7 +46,6 @@ public class TurretTest extends TeamOpMode {
 //            driveTrain.drive(gamepadForward, gamepadDrift, gamepadTurn, botHeading, 1);
             turret.turnTowardsPoint(0, 0);
             telemetry.addData("turret curr deg", turret.getCurrDeg());
-            telemetry.addData("turret wanted deg", turret.getWantedDeg(0, 0));
             telemetry.addData("rPose", pinpoint.getPosition());
             telemetry.addData("turret state", TurretState.get());
             telemetry.update();
