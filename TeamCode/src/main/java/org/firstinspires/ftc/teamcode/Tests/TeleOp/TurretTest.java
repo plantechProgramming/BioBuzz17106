@@ -27,10 +27,6 @@ public class TurretTest extends TeamOpMode {
     protected void run() {
         pinpoint.resetPosAndIMU();
         Turret turret = new Turret(telemetry);
-
-        turret.init();
-        sleep(3000);
-        turretMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        DriveTrain driveTrain = new DriveTrain();
 //
 //        double gamepadForward; //-1 to 1
@@ -49,8 +45,9 @@ public class TurretTest extends TeamOpMode {
 //
 //            driveTrain.drive(gamepadForward, gamepadDrift, gamepadTurn, botHeading, 1);
             turret.turnTowardsPoint(0, 0);
-//            telemetry.addData("turret curr deg", turret.getCurrDeg());
-//            telemetry.addData("turret wanted deg", turret.getWantedDeg(0, 0));
+            telemetry.addData("turret curr deg", turret.getCurrDeg());
+            telemetry.addData("turret wanted deg", turret.getWantedDeg(0, 0));
+            telemetry.addData("rPose", pinpoint.getPosition());
             telemetry.addData("turret state", TurretState.get());
             telemetry.update();
             pinpoint.update();

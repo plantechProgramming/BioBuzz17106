@@ -21,7 +21,7 @@ public class Turret {
     private final double OUTER_GEAR_RATIO = 1; // eg 1/2 half as many at the turretMotor compared to the motor shaft
 
     private final double MIN_LIMIT = -160, MAX_LIMIT = 160;
-    private final double STARTING_ROTATE_OFFSET = -90; // deg at the start of the match instead of pointing the turret in a strange direction you can set the offset so that you can place the turret in a normal direction
+    private final double STARTING_ROTATE_OFFSET = 45;
     PoseFunctions poseFunctions;
     Telemetry telemetry;
     public Turret(Telemetry telemetry) {
@@ -31,7 +31,7 @@ public class Turret {
     }
     public void runToTick(int tick){
         if (!isInNoReachZone(tickToDeg(tick))) {
-            turret.setTargetPosition(tick);
+            turret.setTargetPosition(getRotatedTick(tick));
             turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             turret.setVelocity(turret.getMotorType().getAchieveableMaxTicksPerSecond());
             TurretState.set(TurretState.NORMAL);
@@ -66,10 +66,6 @@ public class Turret {
         double turretDeg = -poseFunctions.getAngleFromPoint(new Pose2D(DistanceUnit.CM, x, y, AngleUnit.DEGREES, 0));
         double absoluteDeg = AngleUnit.normalizeDegrees(turretDeg + pinpoint.getHeading(AngleUnit.DEGREES));
         return absoluteDeg;
-    }
-    public void init(){
-        TurretState.set(TurretState.INITIALISING);
-        runToDeg(degToTick(getRotatedDeg(0)));
     }
     public double getRotatedDeg(double deg){
         return AngleUnit.normalizeDegrees(deg - STARTING_ROTATE_OFFSET);
