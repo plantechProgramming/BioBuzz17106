@@ -47,6 +47,13 @@ public class DashboardCanvas {
                 .strokeLine(x, y, endX, endY);
         return this;
     }
+
+    public DashboardCanvas addDot(double x, double y, String color){ // in inches and radian
+        telemetryPacket.fieldOverlay()
+                .setStroke(color)
+                .strokeCircle(x, y, 0.1);
+        return this;
+    }
     public void draw(){
         FtcDashboard.getInstance().sendTelemetryPacket(telemetryPacket);
     }
