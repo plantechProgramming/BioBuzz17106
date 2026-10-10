@@ -61,7 +61,6 @@ public class InitComponents {
     public void initTurret(){
         turretMotor = hardwareMap.get(DcMotorEx.class, "turret");
         turretMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
     }
     
     public void initPinpoint(){ // the initialisation of the pinpoint is in pedro
