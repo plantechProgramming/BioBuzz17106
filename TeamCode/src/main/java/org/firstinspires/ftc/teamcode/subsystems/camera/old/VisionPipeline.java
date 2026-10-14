@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.subsystems.camera.old;
 
 import android.graphics.Canvas;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.teamcode.misc.utils.Color;
 import org.firstinspires.ftc.vision.VisionProcessor;
@@ -10,14 +12,14 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-
+@Disabled
 public class VisionPipeline implements VisionProcessor {
     Scalar max;
     Scalar min;
 
     public VisionPipeline(Color color){
-        this.max = color.getMax();
-        this.min = color.getMin();
+//        this.max = color.getMax();
+//        this.min = color.getMin();
 
     }
 

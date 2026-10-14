@@ -24,7 +24,7 @@ public class VisionOpMode extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Rect rect = new Rect(150, 100, 50, 50);
 
-        pipeLine = new VisionPipeline(Color.YELLOW);
+//        pipeLine = new VisionPipeline(Color.YELLOW);
         colorSensor = new ColorSensorPipeline(rect);
 
         waitForStart();
@@ -41,10 +41,10 @@ public class VisionOpMode extends LinearOpMode {
                 .build();
 
         List<Color> colors = new ArrayList<Color>();
-        colors.add(Color.YELLOW);
+//        colors.add(Color.YELLOW);
         // needed to run continuously
         while (opModeIsActive() || opModeInInit()) {
-            telemetry.addData("color",colorSensor.isColor(Color.YELLOW));
+//            telemetry.addData("color",colorSensor.isColor(Color.YELLOW));
             telemetry.addLine("hello world");
             telemetry.update();
             sleep(20);

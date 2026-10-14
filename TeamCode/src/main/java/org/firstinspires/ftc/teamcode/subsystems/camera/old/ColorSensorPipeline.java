@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.subsystems.camera.old;
 
 import android.graphics.Canvas;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.teamcode.misc.utils.Color;
 import org.firstinspires.ftc.vision.VisionProcessor;
@@ -12,6 +14,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+@Disabled
 public class ColorSensorPipeline implements VisionProcessor {
     private Scalar avgColor = new Scalar(0, 0, 0);
     private final Rect square;
@@ -51,7 +54,7 @@ public class ColorSensorPipeline implements VisionProcessor {
         Mat pixelMat = new Mat(1, 1, CvType.CV_8UC3);
         pixelMat.setTo(avgColor);
         Mat mask = new Mat();
-        Core.inRange(pixelMat, color.getMin(), color.getMax(), mask);
+//        Core.inRange(pixelMat, color.getMin(), color.getMax(), mask);
         return mask.get(0, 0)[0] != 0;
     }
 
