@@ -1,0 +1,59 @@
+package org.firstinspires.ftc.teamcode.tests.teleop;
+
+import static com.pedropathing.ivy.Scheduler.schedule;
+
+import static org.firstinspires.ftc.teamcode.misc.InitComponents.pinpoint;
+
+import com.pedropathing.follower.Follower;
+import com.pedropathing.ivy.Scheduler;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.misc.utils.DashboardCanvas;
+import org.firstinspires.ftc.teamcode.misc.pedro.Constants;
+import org.firstinspires.ftc.teamcode.TeamOpMode;
+import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
+
+@TeleOp(group = "teleop tests")
+public class DriveTest extends TeamOpMode {
+
+    @Override
+    protected void postInit(){
+        Follower follower = Constants.create(hardwareMap); // this line and the next line initialises the drivetrain motors
+        follower.update();
+        pinpoint.resetPosAndIMU();
+        sleep(250);
+    }
+    @Override
+    protected void run() {
+
+        DriveTrain driveTrain = new DriveTrain();
+        DriveTrain.setDriveToBrakeMode();
+
+        double gamepadForward; //-1 to 1
+        double gamepadTurn;
+        double gamepadDrift;
+        double botHeading;
+
+        while(opModeIsActive()){
+            gamepadForward = -gamepad1.left_stick_y;
+            gamepadTurn = gamepad1.right_stick_x;
+            gamepadDrift = gamepad1.left_stick_x;
+
+            botHeading = pinpoint.getHeading(AngleUnit.DEGREES);
+            schedule(driveTrain.drive(gamepadForward, gamepadDrift, gamepadTurn, botHeading+90, 1));//TODO: change for RED  -90
+            driveTrain.updateTelemetry(telemetry);
+            new DashboardCanvas()
+                    .addRobotAsCircle(pinpoint.getPosition())
+                    .draw();
+            telemetry.update();
+            Scheduler.execute();
+            pinpoint.update();
+        }
+    }
+
+    @Override
+    protected void end() {
+
+    }
+}

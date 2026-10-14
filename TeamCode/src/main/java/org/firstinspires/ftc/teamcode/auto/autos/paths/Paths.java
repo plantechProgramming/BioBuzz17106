@@ -2,17 +2,12 @@ package org.firstinspires.ftc.teamcode.auto.autos.paths;
 
 import static com.pedropathing.api.Paths.line;
 
-import android.util.Pair;
-
-import com.pedropathing.follower.Follower;
-import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Misc.Utils.Alliance;
-import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
+import org.firstinspires.ftc.teamcode.misc.utils.Alliance;
+import org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

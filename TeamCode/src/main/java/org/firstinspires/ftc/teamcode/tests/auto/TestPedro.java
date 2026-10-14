@@ -1,0 +1,58 @@
+package org.firstinspires.ftc.teamcode.tests.auto; // make sure this aligns with class location
+
+import com.pedropathing.follower.Follower;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.misc.utils.Alliance;
+import org.firstinspires.ftc.teamcode.misc.utils.Extras;
+import org.firstinspires.ftc.teamcode.misc.pedro.Constants;
+import org.firstinspires.ftc.teamcode.auto.autos.paths.Paths;
+
+@Autonomous(group = "autonomous tests")
+public class TestPedro extends LinearOpMode {
+    private Follower follower;
+    Paths path;
+    Extras extras;
+    ElapsedTime elapsedTime;
+    int counter = 0;
+    public void autonomousPathUpdate() {
+        if(counter == 0){
+//            follower.followPath(path.scorePreloadFar);
+            counter++;
+        } else if (counter == 1) {
+//            follower.followPath(path.grabGPPFar);
+            counter++;
+        }
+    }
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        extras = new Extras();
+        elapsedTime = new ElapsedTime();
+        extras.startHistogram(0.1);
+        Alliance.set(Alliance.BLUE);
+        path = new Paths();
+        follower = Constants.create(hardwareMap);
+
+//        follower.setStartingPose(path.points.startPoseFar);
+        waitForStart();
+        while (opModeIsActive()){
+            elapsedTime.reset();
+            // These loop the movements of the robot, these must be called continuously in order to work
+            follower.update();
+            if(!follower.isBusy())
+                autonomousPathUpdate();
+
+            // Feedback to Driver Hub for debugging
+            telemetry.addData("x", follower.pose().x());
+            telemetry.addData("y", follower.pose().y());
+            telemetry.addData("heading", follower.pose().heading());
+            telemetry.update();
+            extras.updateHistogram(elapsedTime.milliseconds());
+        }
+        System.out.println("auto loop time: " + extras.getHistogram());
+    }
+
+}

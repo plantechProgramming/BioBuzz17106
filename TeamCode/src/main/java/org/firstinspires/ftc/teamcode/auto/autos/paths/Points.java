@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.auto.autos.paths;
 
 
-import android.util.Pair;
-
 import com.pedropathing.api.PoseFactory;
 import com.pedropathing.math.Pose;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

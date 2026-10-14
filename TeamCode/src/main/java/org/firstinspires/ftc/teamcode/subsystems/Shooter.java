@@ -7,12 +7,12 @@ import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Misc.GetVelocity;
-import org.firstinspires.ftc.teamcode.Misc.InitComponents;
-import org.firstinspires.ftc.teamcode.Misc.PID;
-import org.firstinspires.ftc.teamcode.Misc.RobotPose;
-import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
-import org.firstinspires.ftc.teamcode.Misc.Utils.TelemetryUtils;
+import org.firstinspires.ftc.teamcode.misc.GetVelocity;
+import org.firstinspires.ftc.teamcode.misc.InitComponents;
+import org.firstinspires.ftc.teamcode.misc.PID;
+import org.firstinspires.ftc.teamcode.misc.RobotPose;
+import org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions;
+import org.firstinspires.ftc.teamcode.misc.utils.TelemetryUtils;
 
 public class Shooter {
     DcMotorEx shootMotor, shootMotorOp;

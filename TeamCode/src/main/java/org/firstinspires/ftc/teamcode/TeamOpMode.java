@@ -1,20 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.dashboardTelemetry;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.ll;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.logiCam;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
+import static org.firstinspires.ftc.teamcode.misc.InitComponents.dashboardTelemetry;
+import static org.firstinspires.ftc.teamcode.misc.InitComponents.pinpoint;
 
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
-import org.firstinspires.ftc.teamcode.Misc.InitComponents;
+import org.firstinspires.ftc.teamcode.misc.InitComponents;
 
 
 public abstract class TeamOpMode extends LinearOpMode {

@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static com.pedropathing.ivy.commands.Commands.infinite;
-import static com.pedropathing.ivy.commands.Commands.lazy;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
@@ -11,9 +9,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.paths.Path;
 
-import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
-import org.firstinspires.ftc.teamcode.auto.autos.paths.Paths;
-import org.firstinspires.ftc.teamcode.subsystems.Camera.Limelight;
+import org.firstinspires.ftc.teamcode.subsystems.camera.Limelight;
 
 public class AutoCommands{
     public Shooter shooter;

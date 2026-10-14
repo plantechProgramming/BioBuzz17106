@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static com.pedropathing.ivy.groups.Groups.parallel;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
+import static org.firstinspires.ftc.teamcode.misc.InitComponents.pinpoint;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.ivy.Command;
@@ -13,9 +13,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Misc.InitComponents;
-import org.firstinspires.ftc.teamcode.Misc.PID;
-import org.firstinspires.ftc.teamcode.Misc.Utils.TelemetryUtils;
+import org.firstinspires.ftc.teamcode.misc.InitComponents;
+import org.firstinspires.ftc.teamcode.misc.PID;
+import org.firstinspires.ftc.teamcode.misc.utils.TelemetryUtils;
 
 @Config
 public class DriveTrain {
