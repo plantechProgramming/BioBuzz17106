@@ -9,6 +9,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
+import java.util.List;
+
 public class DashboardCanvas {
     private TelemetryPacket telemetryPacket;
 
@@ -47,6 +49,25 @@ public class DashboardCanvas {
                 .strokeLine(x, y, endX, endY);
         return this;
     }
+
+    public DashboardCanvas addDot(Point p, String color, double radius){
+        telemetryPacket.fieldOverlay()
+                .setStroke(color)
+                .fillCircle(p.getX(), p.getY(), radius);
+        return this;
+    }
+
+    public DashboardCanvas addGameElement(GameElement element, Point point){
+        addDot(point, element.getColor().getColorHex(), element.getRadiusInches());
+        return this;
+    }
+    public DashboardCanvas addGameElements(List<GameElement> elements, List<Point> points){
+        for(int i = 0; i < elements.size(); i++){
+            addGameElement(elements.get(i), points.get(i));
+        }
+        return this;
+    }
+
     public void draw(){
         FtcDashboard.getInstance().sendTelemetryPacket(telemetryPacket);
     }
