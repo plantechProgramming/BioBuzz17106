@@ -21,9 +21,9 @@ public enum GameElement {
 
     public static GameElement fromString(String name){ //TODO: change the names to the detection names
         switch (name){
-            case "Red nectar":
+            case "RedNectar":
                 return GameElement.RED_NECTAR;
-            case "Blue nectar":
+            case "BlueNectar":
                 return GameElement.BLUE_NECTAR;
             case  "Pollen":
                 return GameElement.POLLEN;

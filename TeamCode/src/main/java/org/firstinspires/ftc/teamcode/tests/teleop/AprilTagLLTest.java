@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.tests.teleop;
 
+
 import static org.firstinspires.ftc.teamcode.misc.InitComponents.ll;
 import static org.firstinspires.ftc.teamcode.misc.InitComponents.pinpoint;
 
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.misc.utils.Alliance;
+import org.firstinspires.ftc.teamcode.misc.utils.Color;
 import org.firstinspires.ftc.teamcode.misc.utils.DashboardCanvas;
 import org.firstinspires.ftc.teamcode.misc.utils.Extras;
 import org.firstinspires.ftc.teamcode.misc.utils.GameElement;
@@ -44,8 +46,12 @@ public class AprilTagLLTest extends TeamOpMode {
                 List<GameElement> detectionElements = limelight.getDetectionElements();
                 new DashboardCanvas()
                         .addGameElements(detectionElements, detectionPoints)
+                        .addDot(detectionPoints.get(0), "#FF0000", 1)
                         .addRobotAsCircle(pinpoint.getPosition())
                         .draw();
+                telemetry.addData("detections", detectionElements);
+                telemetry.addData("detections", detectionPoints);
+                telemetry.addData("detections", detectionsResult);
             }
             catch (NullPointerException ignored){
             }

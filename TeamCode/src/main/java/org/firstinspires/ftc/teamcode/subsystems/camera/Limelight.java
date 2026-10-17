@@ -64,9 +64,9 @@ public class Limelight {
 
 
     private Pose2D getPose2DFromXYAngle(double xDeg, double yDeg){ // the angle x and y to the target, x and y angle in deg
-        double llForwardOffset = 12;// cm from lens to middle of robot
-        double llHeight = 39; // cm
-        double artifactHeight = 8; // approximately in cm
+        double llForwardOffset = 20;// cm from lens to middle of robot
+        double llHeight = 9; // cm
+        double artifactHeight = 3.5; // approximately in cm
         double heightDiff = llHeight - artifactHeight;
 
         double xRad = Math.toRadians(xDeg);

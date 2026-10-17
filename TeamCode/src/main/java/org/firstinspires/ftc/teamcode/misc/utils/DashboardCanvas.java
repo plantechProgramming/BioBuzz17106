@@ -53,7 +53,7 @@ public class DashboardCanvas {
     public DashboardCanvas addDot(Point p, String color, double radius){
         telemetryPacket.fieldOverlay()
                 .setStroke(color)
-                .fillCircle(p.getX(), p.getY(), radius);
+                .strokeCircle(p.getX(), p.getY(), radius);
         return this;
     }
 
