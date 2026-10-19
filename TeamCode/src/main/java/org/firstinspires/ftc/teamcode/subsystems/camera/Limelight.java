@@ -26,6 +26,7 @@ import java.util.List;
 public class Limelight {
     Limelight3A ll;
     PoseLowPass poseLowPass = new PoseLowPass(0.01, 0.01);
+    private List<DetectorResult> detectorResults;
     public Limelight() {
         ll = InitComponents.ll;
     }
@@ -40,21 +41,17 @@ public class Limelight {
         }
         throw new NullPointerException("No valid apriltag found");
     }
-
-    public List<ColorResult>  getLatestColorDetection() throws NullPointerException{ // LLCords
+    public void updateDetectorResult() {
         LLResult result = ll.getLatestResult();
         if (result != null && result.isValid()) {
-            return result.getColorResults();
+            detectorResults = result.getDetectorResults();
         }
-        throw new NullPointerException("No valid color detection found");
+        else{
+            detectorResults = null;
+        }
     }
-
-    public List<DetectorResult> getLatestDetectionResult() throws NullPointerException{ // LLCords
-        LLResult result = ll.getLatestResult();
-        if (result != null && result.isValid()) {
-            return result.getDetectorResults();
-        }
-        throw new NullPointerException("No valid detection result found");
+    public boolean isDetectorResultGood(){
+        return detectorResults != null;
     }
 
     public Pose2D getFilteredBotPose() throws NullPointerException{
@@ -78,34 +75,20 @@ public class Limelight {
         return new Pose2D(DistanceUnit.CM,actualX,actualY-llForwardOffset,AngleUnit.DEGREES, xDeg);
     }
 
-    public List<Pose2D> getColorDetectionAsPose2D() throws NullPointerException{ // relative to robot
+    public List<Pose2D> getDetectorResultAsPose2D(){ // relative to robot
         List<Pose2D> XYlist = new ArrayList<>();
-        List<ColorResult> colorDetections = getLatestColorDetection();
-        List<GameElement> elements = getDetectionElements();
-        int size = Math.min(colorDetections.size(), elements.size());
-        for(int i=0; i<size; i++){
-            ColorResult colorDetection = colorDetections.get(i);
+        List<GameElement> elements = getDetectorResultElements();
+        for(int i=0; i<detectorResults.size(); i++){
+            DetectorResult detectorResult = detectorResults.get(i);
             GameElement element = elements.get(i);
-            XYlist.add(getPose2DFromXYAngle(colorDetection.getTargetXDegrees(), colorDetection.getTargetYDegrees(), element));
+            XYlist.add(getPose2DFromXYAngle(detectorResult.getTargetXDegrees(),
+                    detectorResult.getTargetYDegrees(), element));
         }
         return XYlist;
     }
-
-    public List<Pose2D> getDetectionResultAsPose2D() throws NullPointerException{ // relative to robot
-        List<Pose2D> XYlist = new ArrayList<>();
-        List<DetectorResult> detectionResults = getLatestDetectionResult();
-        List<GameElement> elements = getDetectionElements();
-        int size = Math.min(detectionResults.size(), elements.size());
-        for(int i=0; i<size; i++){
-            DetectorResult detectorResult = detectionResults.get(i);
-            GameElement element = elements.get(i);
-            XYlist.add(getPose2DFromXYAngle(detectorResult.getTargetXDegrees(), detectorResult.getTargetYDegrees(), element));
-        }
-        return XYlist;
-    }
-    private List<Pose2D> getRotatedDetection(double robotAngle, List<Pose2D> detectionPoses){
+    public List<Pose2D> getRotatedDetectorResults(double robotAngle){
         List<Pose2D> rotatedDetections = new ArrayList<>();
-        for(Pose2D detectionPose : detectionPoses){
+        for(Pose2D detectionPose : getDetectorResultAsPose2D()){
             double detectionAngle = detectionPose.getHeading(AngleUnit.DEGREES);
             double absAngle = AngleFunctions.convertToWrapAroundAngle(detectionAngle + robotAngle);
             Pair<Double, Double> rotatedXY = PoseFunctions.rotation2D(detectionPose.getX(DistanceUnit.CM),
@@ -115,17 +98,9 @@ public class Limelight {
         return rotatedDetections;
     }
 
-    public List<Pose2D> getRotatedColorDetection(double robotAngle){
-        return getRotatedDetection(robotAngle, getColorDetectionAsPose2D());
-    }
-
-    public List<Pose2D> getRotatedDetectionResult(double robotAngle){
-        return getRotatedDetection(robotAngle, getDetectionResultAsPose2D());
-    }
-
-    private List<Pose2D> getAbsoluteDetection(Pose2D robotPose, List<Pose2D> rotatedDetections){ // ftc coords
+    public List<Pose2D> getAbsoluteDetectorResult(Pose2D robotPose){ // ftc coords
         List<Pose2D> absoluteDetections = new ArrayList<>();
-        for(Pose2D pose : rotatedDetections){
+        for(Pose2D pose : getRotatedDetectorResults(robotPose.getHeading(AngleUnit.DEGREES))){
             double absPoseX = -pose.getY(DistanceUnit.CM) + robotPose.getX(DistanceUnit.CM);
             double absPoseY = pose.getX(DistanceUnit.CM) + robotPose.getY(DistanceUnit.CM);
             absoluteDetections.add(new Pose2D(DistanceUnit.CM, absPoseX, absPoseY, AngleUnit.DEGREES, pose.getHeading(AngleUnit.DEGREES)));
@@ -133,19 +108,14 @@ public class Limelight {
         return absoluteDetections;
     }
 
-    public List<Pose2D> getAbsoluteColorDetection(Pose2D robotPose){ // ftc coords
-        return getAbsoluteDetection(robotPose, getRotatedColorDetection(robotPose.getHeading(AngleUnit.DEGREES)));
-    }
-
-    public List<Pose2D> getAbsoluteDetectionResult(Pose2D robotPose){ // ftc coords
-        return getAbsoluteDetection(robotPose, getRotatedDetectionResult(robotPose.getHeading(AngleUnit.DEGREES)));
-    }
-    public List<GameElement> getDetectionElements(){
-        List<DetectorResult> detectionResults = getLatestDetectionResult();
-        List<String> detectionNames = Extras.I_To_T_ForList(detectionResults, DetectorResult::getClassName);
+    public List<GameElement> getDetectorResultElements(){
+        List<String> detectionNames = Extras.I_To_T_ForList(detectorResults, DetectorResult::getClassName);
         List<GameElement> detectionElements = Extras.I_To_T_ForList(detectionNames, GameElement::fromString);
         return detectionElements;
     }
+
+    // --------------------------blobs--------------------------------------
+
     public List<List<Pose2D>> getBlobs(List<Pose2D> artifactPoses){
         final double MAX_NEIGHBOR_DISTANCE = 20; // in cm
         List<List<Pose2D>> blobs = new ArrayList<>();
@@ -197,7 +167,7 @@ public class Limelight {
     }
 
     public Pose2D getBestPoseForPickup(Pose2D rPose){ // the best end point of a path that intakes the most amount of artifacts
-        List<Pose2D> artifactPoses = getAbsoluteDetectionResult(rPose);
+        List<Pose2D> artifactPoses = getAbsoluteDetectorResult(rPose);
         List<List<Pose2D>> biggestBlobs = getBiggestBlobs(artifactPoses);
         Pose2D bestTargetPose = getBestPoseInBlob(biggestBlobs.get(0), rPose);
 

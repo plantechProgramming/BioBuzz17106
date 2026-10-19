@@ -39,25 +39,25 @@ public class AprilTagLLTest extends TeamOpMode {
         ll.start();
         while (opModeIsActive()){
             List<Pose2D> detectionsResult;
-            try{
-                detectionsResult = limelight.getAbsoluteDetectionResult(pinpoint.getPosition());
+            if(limelight.isDetectorResultGood()){
+                detectionsResult = limelight.getAbsoluteDetectorResult(pinpoint.getPosition());
                 List<Point> detectionPoints = Extras.I_To_T_ForList(detectionsResult,
                         PoseFunctions::pose2DToPoint);
-                List<GameElement> detectionElements = limelight.getDetectionElements();
+                List<GameElement> detectionElements = limelight.getDetectorResultElements();
+
                 new DashboardCanvas()
                         .addGameElements(detectionElements, detectionPoints)
                         .addDot(detectionPoints.get(0), "#FF0000", 1)
                         .addRobotAsCircle(pinpoint.getPosition())
                         .draw();
-                telemetry.addData("detections", detectionElements);
-                telemetry.addData("detections", detectionPoints);
-                telemetry.addData("detections", detectionsResult);
+
+                telemetry.addData("detections elements", detectionElements);
+                telemetry.addData("detections points", detectionPoints);
+                telemetry.addData("detections result", detectionsResult);
             }
-            catch (NullPointerException ignored){
-            }
+            limelight.updateDetectorResult();
             telemetry.update();
             pinpoint.update();
-
         }
     }
 
