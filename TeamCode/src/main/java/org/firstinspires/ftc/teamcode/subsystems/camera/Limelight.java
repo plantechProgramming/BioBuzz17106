@@ -63,10 +63,10 @@ public class Limelight {
     }
 
 
-    private Pose2D getPose2DFromXYAngle(double xDeg, double yDeg){ // the angle x and y to the target, x and y angle in deg
+    private Pose2D getPose2DFromXYAngle(double xDeg, double yDeg, GameElement element){ // the angle x and y to the target, x and y angle in deg
         double llForwardOffset = 20;// cm from lens to middle of robot
         double llHeight = 9; // cm
-        double artifactHeight = 3.5; // approximately in cm
+        double artifactHeight = element.getUnit().toCm(element.getRadiusInches()); // approximately in cm
         double heightDiff = llHeight - artifactHeight;
 
         double xRad = Math.toRadians(xDeg);
@@ -81,8 +81,12 @@ public class Limelight {
     public List<Pose2D> getColorDetectionAsPose2D() throws NullPointerException{ // relative to robot
         List<Pose2D> XYlist = new ArrayList<>();
         List<ColorResult> colorDetections = getLatestColorDetection();
-        for(ColorResult colorDetection : colorDetections){
-            XYlist.add(getPose2DFromXYAngle(colorDetection.getTargetXDegrees(), colorDetection.getTargetYDegrees()));
+        List<GameElement> elements = getDetectionElements();
+        int size = Math.min(colorDetections.size(), elements.size());
+        for(int i=0; i<size; i++){
+            ColorResult colorDetection = colorDetections.get(i);
+            GameElement element = elements.get(i);
+            XYlist.add(getPose2DFromXYAngle(colorDetection.getTargetXDegrees(), colorDetection.getTargetYDegrees(), element));
         }
         return XYlist;
     }
@@ -90,8 +94,12 @@ public class Limelight {
     public List<Pose2D> getDetectionResultAsPose2D() throws NullPointerException{ // relative to robot
         List<Pose2D> XYlist = new ArrayList<>();
         List<DetectorResult> detectionResults = getLatestDetectionResult();
-        for(DetectorResult detectionResult : detectionResults){
-            XYlist.add(getPose2DFromXYAngle(detectionResult.getTargetXDegrees(), detectionResult.getTargetYDegrees()));
+        List<GameElement> elements = getDetectionElements();
+        int size = Math.min(detectionResults.size(), elements.size());
+        for(int i=0; i<size; i++){
+            DetectorResult detectorResult = detectionResults.get(i);
+            GameElement element = elements.get(i);
+            XYlist.add(getPose2DFromXYAngle(detectorResult.getTargetXDegrees(), detectorResult.getTargetYDegrees(), element));
         }
         return XYlist;
     }

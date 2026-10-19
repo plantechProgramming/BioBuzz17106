@@ -1,15 +1,19 @@
 package org.firstinspires.ftc.teamcode.misc.utils;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 public enum GameElement {
-    POLLEN(Color.YELLOW_POLLEN, 2.8),
-    BLUE_NECTAR(Color.BLUE_NECTAR, 3.6),
-    RED_NECTAR(Color.RED_NECTAR, GameElement.BLUE_NECTAR.getRadiusInches());
+    POLLEN(Color.YELLOW_POLLEN, DistanceUnit.INCH, 2.8),
+    BLUE_NECTAR(Color.BLUE_NECTAR, POLLEN.getUnit(), 3.6),
+    RED_NECTAR(Color.RED_NECTAR, POLLEN.getUnit(), GameElement.BLUE_NECTAR.getRadiusInches());
 
     private final Color color;
     private final double radiusInches;
-    GameElement(Color c, double radiusInches){
+    private final DistanceUnit unit;
+    GameElement(Color c, DistanceUnit unit, double radiusInches){
         color = c;
         this.radiusInches = radiusInches;
+        this.unit = unit;
     }
     public Color getColor() {
         return color;
@@ -17,6 +21,9 @@ public enum GameElement {
 
     public double getRadiusInches() {
         return radiusInches;
+    }
+    public DistanceUnit getUnit(){
+        return unit;
     }
 
     public static GameElement fromString(String name){ //TODO: change the names to the detection names
