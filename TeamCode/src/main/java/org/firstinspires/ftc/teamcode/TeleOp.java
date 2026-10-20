@@ -6,7 +6,9 @@ import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
 import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -36,88 +38,17 @@ public class TeleOp extends TeamOpMode {
 
     @Override
     public void run(){
-        DriveTrain driveTrain = new DriveTrain();
-        ElapsedTime elapsedTime = new ElapsedTime();
-        AutoCommands commands = new AutoCommands();
-        PoseFunctions poseFunctions = new PoseFunctions(new RobotPose(pinpoint));
-
-        double gamepadForward; //-1 to 1
-        double gamepadTurn;
-        double gamepadDrift;
-        double botHeading;
-        boolean shooting;
-        boolean turning;
-        boolean activatedHold = false;
-        boolean holdInitialized = false;
-
-//        pinpoint.setPosition(PoseConverter.poseToPose2D(DataSaving.getEndPos(), InvertedFTCCoordinates.INSTANCE));
-        pinpoint.update();
-//        Pose lastPos = follower.getPose();
-        DriveTrain.setDriveToBrakeMode();
 
         while (opModeIsActive()) {
-            elapsedTime.reset();
 
-            gamepadForward = -gamepad1.left_stick_y;
-            gamepadTurn = gamepad1.right_stick_x;
-            gamepadDrift = gamepad1.left_stick_x;
-            shooting = gamepad1.right_bumper;
-            turning = gamepad1.left_bumper;
+            DrivePowers powers = ManualDrive.fieldCentric(
+                    -gamepad1.left_stick_y,
+                    gamepad1.left_stick_x,
+                    gamepad1.right_stick_x,
+                    follower.pose().heading()
+            );
+            ManualDrive.driveOrHold(follower, powers);
 
-            botHeading = pinpoint.getHeading(AngleUnit.DEGREES);
-
-            if(shooting){
-                schedule(commands.shoot());
-                if(!holdInitialized){
-                    DriveTrain.setDriveToFloatMode();
-                    holdInitialized = true;
-//                    lastPos = follower.getPose();
-                }
-//                follower.holdPoint(lastPos, false);
-                activatedHold = true;
-            }
-            else {
-                holdInitialized = false;
-                if(activatedHold){
-                    activatedHold = false;
-//                    follower.followPath(new Path(new BezierLine(follower.getPose(), follower.getPose())), false); // need to clean
-                    DriveTrain.setDriveToBrakeMode();
-                }
-                if(turning){
-                    schedule(driveTrain.turnToAngle(poseFunctions.getAngleFromGoal(), botHeading));
-                }
-                else{
-                    schedule(driveTrain.drive(gamepadForward, gamepadDrift, gamepadTurn, botHeading+90, 1));//TODO: change for RED  -90
-                }
-
-                if (gamepad1.right_trigger > 0){
-                    schedule(commands.take());
-                }
-                else if(gamepad1.left_trigger!=0) {
-                    schedule(commands.partialOut());
-                }
-                else if(gamepad1.x){
-                    schedule(commands.out());
-                }
-                else {
-                    schedule(commands.stopAll());
-                }
-            }
-
-            commands.shooter.interpolationVariableShoot(gamepad1.dpad_up, gamepad1.dpad_down, 0.01);
-
-
-            if(gamepad1.back) {
-                pinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.DEGREES, 0));
-            }
-
-            TelemetryUtils.updateCertainTelemtries(telemetry, driveTrain, commands.shooter, poseFunctions);
-            new DashboardCanvas()
-                    .addPreciseRobot(pinpoint.getPosition())
-                    .draw();
-            telemetry.update();
-
-            schedule(commands.periodic());
             Scheduler.execute();
             follower.update();
         }
