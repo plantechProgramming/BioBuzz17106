@@ -82,6 +82,23 @@ public class DriveTrain {
         return turnWithPow(turnPow);
     }
 
+    public void moveRight(boolean gamepad){
+        if(gamepad){
+            FL.setPower(1);
+            FR.setPower(-1);
+            BL.setPower(-1);
+            BR.setPower(1);
+        }
+        else{
+            FL.setPower(0);
+            FR.setPower(0);
+            BL.setPower(0);
+            BR.setPower(0);
+        }
+
+
+    }
+
     public Command setPower(double FLPow, double BLPow, double FRPow, double BRPow){
         return parallel(
                 Commands.instant(()->FL.setPower(FLPow)),

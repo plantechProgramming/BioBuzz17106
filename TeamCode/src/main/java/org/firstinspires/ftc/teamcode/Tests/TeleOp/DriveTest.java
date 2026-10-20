@@ -41,7 +41,7 @@ public class DriveTest extends TeamOpMode {
             gamepadDrift = gamepad1.left_stick_x;
 
             botHeading = pinpoint.getHeading(AngleUnit.DEGREES);
-            schedule(driveTrain.drive(gamepadForward, gamepadDrift, gamepadTurn, botHeading+90, 1));//TODO: change for RED  -90
+            schedule(driveTrain.drive(gamepadForward, gamepadDrift, gamepadTurn, botHeading- 0, 1));//TODO: change for RED  -90
             driveTrain.updateTelemetry(telemetry);
             new DashboardCanvas()
                     .addRobotAsCircle(pinpoint.getPosition())
