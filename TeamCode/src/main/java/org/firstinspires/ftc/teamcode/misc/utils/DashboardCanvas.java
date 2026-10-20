@@ -62,8 +62,7 @@ public class DashboardCanvas {
         return this;
     }
     public DashboardCanvas addGameElements(List<GameElement> elements, List<Point> points){
-        int smallestListSize = Math.min(elements.size(), points.size());
-        for(int i = 0; i < smallestListSize; i++){
+        for(int i = 0; i < points.size(); i++){
             addGameElement(elements.get(i), points.get(i));
         }
         return this;

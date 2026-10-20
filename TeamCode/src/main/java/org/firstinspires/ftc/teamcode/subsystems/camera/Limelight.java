@@ -61,8 +61,9 @@ public class Limelight {
 
 
     private Pose2D getPose2DFromXYAngle(double xDeg, double yDeg, GameElement element){ // the angle x and y to the target, x and y angle in deg
-        double llForwardOffset = 20;// cm from lens to middle of robot
-        double llHeight = 9; // cm
+        double llForwardOffset = 17;// cm from lens to middle of robot
+        double llHeight = 20; // cm
+        double llRight = -11;
         double artifactHeight = element.getUnit().toCm(element.getRadiusInches()); // approximately in cm
         double heightDiff = llHeight - artifactHeight;
 
@@ -72,7 +73,7 @@ public class Limelight {
         double groundDis = heightDiff / Math.tan(yRad); // from cam to target
         double actualY = Math.cos(xRad) * groundDis;
         double actualX = Math.sin(xRad) * groundDis;
-        return new Pose2D(DistanceUnit.CM,actualX,actualY-llForwardOffset,AngleUnit.DEGREES, xDeg);
+        return new Pose2D(DistanceUnit.CM,actualX-llRight,actualY-llForwardOffset,AngleUnit.DEGREES, xDeg);
     }
 
     public List<Pose2D> getDetectorResultAsPose2D(){ // relative to robot

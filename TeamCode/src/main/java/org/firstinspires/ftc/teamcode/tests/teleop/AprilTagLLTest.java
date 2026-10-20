@@ -51,6 +51,7 @@ public class AprilTagLLTest extends TeamOpMode {
                         .addRobotAsCircle(pinpoint.getPosition())
                         .draw();
 
+                telemetry.addData("detection raw pose", limelight.getDetectorResultAsPose2D());
                 telemetry.addData("detections elements", detectionElements);
                 telemetry.addData("detections points", detectionPoints);
                 telemetry.addData("detections result", detectionsResult);

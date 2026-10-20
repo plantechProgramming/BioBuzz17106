@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.misc.utils;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public enum GameElement {
-    POLLEN(Color.YELLOW_POLLEN, DistanceUnit.INCH, 2.8),
-    BLUE_NECTAR(Color.BLUE_NECTAR, POLLEN.getUnit(), 3.6),
+    POLLEN(Color.YELLOW_POLLEN, DistanceUnit.INCH, 1.4),
+    BLUE_NECTAR(Color.BLUE_NECTAR, POLLEN.getUnit(), 1.8),
     RED_NECTAR(Color.RED_NECTAR, POLLEN.getUnit(), GameElement.BLUE_NECTAR.getRadiusInches());
 
     private final Color color;
