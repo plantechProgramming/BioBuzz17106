@@ -5,11 +5,13 @@ import static com.pedropathing.ivy.groups.Groups.parallel;
 import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.pedropathing.api.Paths;
 import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.commands.Commands;
+import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -37,7 +39,6 @@ public class DriveTrain {
     }
 
 
-    @Deprecated
     public Command drive(double y, double x, double rx, double botHeading, double slowRatio){ // bot heading in degrees
         // slowRatio [0,1] - output power multiplier
         botHeading = Math.toRadians(botHeading);
@@ -74,7 +75,6 @@ public class DriveTrain {
         BL.setPower(0);
     }
     double turnPow = 0;
-    @Deprecated
     public Command turnToAngle(double wantedDeg, double curDeg) {
 
         double threshold = 0.55;
@@ -101,7 +101,6 @@ public class DriveTrain {
         return setPower(-pow, -pow, pow, pow);
     }
 
-    @Deprecated
     public static void setDriveToBrakeMode(){
         InitComponents.BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         InitComponents.BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -109,7 +108,6 @@ public class DriveTrain {
         InitComponents.FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    @Deprecated
     public static void setDriveToFloatMode(){
         InitComponents.BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         InitComponents.BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -127,25 +125,6 @@ public class DriveTrain {
         telemetry.addData("BL pow", BL.getPower());
         telemetry.addData("BR pow", BR.getPower());
         TelemetryUtils.addTitle(telemetry, "ending drive telemetry");
-    }
-
-    public void driveWithPedro(Gamepad gamepad1, Follower follower, ElapsedTime elapsedTime){
-        if(elapsedTime.milliseconds() >= 200){
-            DrivePowers powers = ManualDrive.fieldCentric(
-                    -gamepad1.left_stick_y,
-                    -gamepad1.left_stick_x,
-                    -gamepad1.right_stick_x,
-                    follower.pose().heading()
-            );
-            ManualDrive.driveOrHold(follower, powers);
-        }
-        else{
-            follower.manual(
-                    -gamepad1.left_stick_y,
-                    -gamepad1.left_stick_x,
-                    -gamepad1.right_stick_x
-            );
-        }
     }
 }
 

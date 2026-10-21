@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Misc.Utils.DashboardCanvas;
 import org.firstinspires.ftc.teamcode.Misc.pedro.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.subsystems.PedroDriveTrain;
 
 @Config
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(group = "teleOp")
@@ -26,35 +27,17 @@ public class TeleOp extends TeamOpMode {
     protected void run() {
         ElapsedTime elapsedTime = new ElapsedTime();
         DriveTrain drivetrain = new DriveTrain();
-        boolean isMovingAutomatically = false;
-        int timesPressedA = 0;
+        PedroDriveTrain pedroDriveTrain = new PedroDriveTrain(follower);
         while(opModeIsActive()){
-            if(!isMovingAutomatically){
-                drivetrain.driveWithPedro(gamepad1, follower, elapsedTime);
+            if(!follower.following()){
+                pedroDriveTrain.driveWithPedro(gamepad1, elapsedTime);
             }
-            if(gamepad1.aWasPressed()){
-                timesPressedA++;
-            }
-            switch (timesPressedA){
-                case 1:
-                    isMovingAutomatically = true;
-                    follower.follow(Paths.line(follower.pose(), new Pose(0, 0, 0)).linear(follower.pose().heading(), 0));
-                    break;
-                case 2:
-                    isMovingAutomatically = false;
-                    follower.stop();
-                    timesPressedA = 0;
-                    break;
-            }
-            if(isMovingAutomatically && !follower.isBusy()){
-                isMovingAutomatically = false;
-                timesPressedA = 0;
-            }
+            pedroDriveTrain.pedroGoToPose(gamepad1.a);
+
             drivetrain.updateTelemetry(telemetry);
             new DashboardCanvas()
                     .addPreciseRobot(pinpoint.getPosition());
-            telemetry.addData("is follower busy", follower.isBusy());
-            telemetry.addData("times pressed a", timesPressedA);
+            telemetry.addData("drive state", follower.mode());
             telemetry.update();
             follower.update();
         }
