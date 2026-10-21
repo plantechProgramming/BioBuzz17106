@@ -133,6 +133,14 @@ public class PoseFunctions {
         return new Point(pose2D.getX(DistanceUnit.INCH), pose2D.getY(DistanceUnit.INCH));
     }
 
+    public static Pair<Double,Double> shortenVector(Pair<Double,Double> deltaXY, double shotenLen){
+        double hypot = Math.hypot(deltaXY.first, deltaXY.second);
+        double newHypot = hypot - shotenLen;
+        double ratio = newHypot/hypot;
+        return new Pair<>(deltaXY.first*ratio, deltaXY.second*ratio);
+
+    }
+
     public void updateTelemetry(Telemetry telemetry){
         TelemetryUtils.addTitle(telemetry, "starting pose functions telemetry");
         telemetry.addData("dis to goal", getDistFromGoal());

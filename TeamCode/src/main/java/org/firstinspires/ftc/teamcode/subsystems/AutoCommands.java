@@ -1,14 +1,27 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static com.pedropathing.ivy.commands.Commands.infinite;
+import static com.pedropathing.ivy.commands.Commands.lazy;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
+import static org.firstinspires.ftc.teamcode.misc.InitComponents.pinpoint;
+
+import android.util.Pair;
+
+import com.pedropathing.api.Paths;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
+import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.misc.RobotPose;
+import org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions;
 import org.firstinspires.ftc.teamcode.subsystems.camera.Limelight;
 
 public class AutoCommands{
@@ -17,8 +30,9 @@ public class AutoCommands{
     public InBetween inBetween;
     Follower follower;
     Limelight limelight;
-
+    PoseFunctions poseFunctions;
     public AutoCommands(Follower follower) {
+        poseFunctions = new PoseFunctions(new RobotPose(pinpoint));
 //        shooter = new Shooter();
 //        intake = new Intake();
 //        inBetween = new InBetween();
@@ -27,6 +41,7 @@ public class AutoCommands{
     }
 
     public AutoCommands(){
+        poseFunctions = new PoseFunctions(new RobotPose(pinpoint));
 //        shooter = new Shooter();
 //        intake = new Intake();
 //        inBetween = new InBetween();
@@ -37,23 +52,20 @@ public class AutoCommands{
         return parallel(shooter.periodic());
     }
 
-//    private Command goToBlob(){
-//        Pose targetArtifact;//        try{
-//            targetArtifact = PoseFunctions.pose2DToPose(
-//                            limelight.getBestPoseForPickup(PoseFunctions.poseToPose2D(follower.getPose())));
-//        }
-//        catch (NullPointerException e){
-//            return null;
-//        }
-//        PathChain path = follower.pathBuilder()
-//                .addPath(new BezierLine(follower.getPose(), targetArtifact))
-//                .setTangentHeadingInterpolation()
-//                .setTValueConstraint(0.5)
-//                .build();
-//
-//        return intake(path);
-//
-//    }
+
+    private Command getPathToBlob(){
+        if(limelight.isDetectorResultGood()){
+            Pose2D targetPose2D = limelight.getBestPoseForPickup(PoseFunctions.poseToPose2D(follower.pose()));
+            Pair<Double, Double> deltaXY = poseFunctions.getXYDiffToPoint(targetPose2D);
+            Pair<Double, Double> shortenedDeltaXY = PoseFunctions.shortenVector(deltaXY, 10);
+            Pair<Double, Double> shortenedXY = new Pair<>(shortenedDeltaXY.first+deltaXY.first, shortenedDeltaXY.second+deltaXY.second);
+            Pose targetPose = PoseFunctions.pose2DToPose(new Pose2D(DistanceUnit.CM, shortenedXY.first, shortenedXY.second,
+                    AngleUnit.DEGREES, targetPose2D.getHeading(AngleUnit.DEGREES)));
+            Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent();
+            return follow(follower, pathToBlob);
+        }
+        return null;
+    }
 //    Command goToArtifact = null;
 //    public Command goToDetectedBlob(){
 //        goToArtifact = null;
@@ -62,9 +74,9 @@ public class AutoCommands{
 //                lazy(() -> goToArtifact)
 //        );
 //    }
-
+//
 //    public Command scoreDetectedBlob(Paths path){ // far score
-//        return lazy(() -> score(follower.pathBuilder().addPath(new BezierLine(follower.getPose(), path.points.scorePoseFar))
+//        return lazy(() -> score(follower.pathBuilder().addPath(new line(follower.getPose(), path.points.scorePoseFar))
 //                        .setLinearHeadingInterpolation(follower.getHeading(), path.points.scorePoseFar.getHeading()).build()));
 //    }
 
