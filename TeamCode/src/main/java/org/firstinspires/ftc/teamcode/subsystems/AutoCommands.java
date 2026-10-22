@@ -31,13 +31,13 @@ public class AutoCommands{
     Follower follower;
     Limelight limelight;
     PoseFunctions poseFunctions;
-    public AutoCommands(Follower follower) {
+    public AutoCommands(Follower follower, Limelight limelight) {
         poseFunctions = new PoseFunctions(new RobotPose(pinpoint));
 //        shooter = new Shooter();
 //        intake = new Intake();
 //        inBetween = new InBetween();
         this.follower = follower;
-        limelight = new Limelight();
+        this.limelight = limelight;
     }
 
     public AutoCommands(){
@@ -53,7 +53,7 @@ public class AutoCommands{
     }
 
 
-    private Command getCommandToBlob(){
+    public Path getPathToBlob(){
         if(limelight.isDetectorResultGood()){
             Pose2D targetPose2D = limelight.getBestPoseForPickup(PoseFunctions.poseToPose2D(follower.pose()));
             Pair<Double, Double> deltaXY = poseFunctions.getXYDiffToPoint(targetPose2D);
@@ -62,16 +62,16 @@ public class AutoCommands{
             Pose targetPose = PoseFunctions.pose2DToPose(new Pose2D(DistanceUnit.CM, shortenedXY.first, shortenedXY.second,
                     AngleUnit.DEGREES, targetPose2D.getHeading(AngleUnit.DEGREES)));
             Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent();
-            return follow(follower, pathToBlob);
+            return pathToBlob;
         }
         return null;
     }
-    Command commandToBlob = null;
+    Path pathToBlob = null;
     public Command goToDetectedBlob(){
-        commandToBlob = null;
+        pathToBlob = null;
         return sequential(
-                lazy(() -> infinite(() -> commandToBlob = getCommandToBlob()).until(() -> commandToBlob != null)),
-                lazy(() -> commandToBlob)
+                lazy(() -> infinite(() -> pathToBlob = getPathToBlob()).until(() -> pathToBlob != null)),
+                lazy(() -> follow(follower, pathToBlob))
         );
     }
 

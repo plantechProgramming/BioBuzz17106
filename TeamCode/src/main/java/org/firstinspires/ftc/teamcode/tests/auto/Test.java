@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.tests.auto;
 
 import static com.pedropathing.api.Paths.line;
+import static com.pedropathing.ivy.commands.Commands.instant;
 import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
 import static org.firstinspires.ftc.teamcode.misc.InitComponents.ll;
+
+import android.view.WindowContentFrameStats;
 
 import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -24,8 +28,8 @@ public class Test extends TeamAuto {
     @Override
     public Command autoRoutine() {
         return sequential(
-                command.goToDetectedBlob(),
-                command.scoreDetectedBlob()
+                command.goToDetectedBlob()
+//                command.scoreDetectedBlob()
 //                follow(follower,
 //                        line(new Pose(72, 72, Math.toRadians(0)), new Pose(0,0,Math.toRadians(0))).constant(Math.toRadians(0)))
 //                repeat(sequential(

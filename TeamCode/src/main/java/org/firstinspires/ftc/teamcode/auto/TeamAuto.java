@@ -13,11 +13,13 @@ import org.firstinspires.ftc.teamcode.misc.pedro.Constants;
 import org.firstinspires.ftc.teamcode.TeamOpMode;
 import org.firstinspires.ftc.teamcode.auto.autos.paths.Paths;
 import org.firstinspires.ftc.teamcode.subsystems.AutoCommands;
+import org.firstinspires.ftc.teamcode.subsystems.camera.Limelight;
 
 public abstract class TeamAuto extends TeamOpMode {
     protected AutoCommands command;
     protected Paths path;
     protected Follower follower;
+    public Limelight limelight;
 //    protected Boolean isFar;
 
     @Override
@@ -26,6 +28,7 @@ public abstract class TeamAuto extends TeamOpMode {
         path = new Paths();
         follower = Constants.create(hardwareMap);
         follower.setPose(new Pose(9, 8.5, Math.toRadians(0)));
+        limelight = new Limelight();
 //        if(isFar){
 ////            follower.setPose(path.points.get("startFar"));
 //        }
@@ -33,16 +36,18 @@ public abstract class TeamAuto extends TeamOpMode {
 ////            follower.setPose(path.points.get("start"));
 //        }
         follower.update();
-        command = new AutoCommands(follower);
+        command = new AutoCommands(follower, limelight);
         schedule(autoRoutine());
         while (opModeIsActive()) {
             TelemetryUtils.updateCertainTelemtries(telemetry, follower);
             DataSaving.setEndPos(follower.pose());
 //            schedule(command.periodic());
 
+            telemetry.addData("pos", command.getPathToBlob());
             Scheduler.execute();
             follower.update();
             telemetry.update();
+            limelight.updateDetectorResult();
         }
     }
 
