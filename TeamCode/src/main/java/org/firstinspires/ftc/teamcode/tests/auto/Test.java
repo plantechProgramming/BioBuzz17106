@@ -24,6 +24,8 @@ public class Test extends TeamAuto {
     @Override
     public Command autoRoutine() {
         return sequential(
+                command.goToDetectedBlob(),
+                command.scoreDetectedBlob()
 //                follow(follower,
 //                        line(new Pose(72, 72, Math.toRadians(0)), new Pose(0,0,Math.toRadians(0))).constant(Math.toRadians(0)))
 //                repeat(sequential(

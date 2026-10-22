@@ -53,7 +53,7 @@ public class AutoCommands{
     }
 
 
-    private Command getPathToBlob(){
+    private Command getCommandToBlob(){
         if(limelight.isDetectorResultGood()){
             Pose2D targetPose2D = limelight.getBestPoseForPickup(PoseFunctions.poseToPose2D(follower.pose()));
             Pair<Double, Double> deltaXY = poseFunctions.getXYDiffToPoint(targetPose2D);
@@ -66,19 +66,18 @@ public class AutoCommands{
         }
         return null;
     }
-//    Command goToArtifact = null;
-//    public Command goToDetectedBlob(){
-//        goToArtifact = null;
-//        return sequential(
-//                lazy(() -> infinite(() -> goToArtifact = goToBlob()).until(() -> goToArtifact != null)),
-//                lazy(() -> goToArtifact)
-//        );
-//    }
-//
-//    public Command scoreDetectedBlob(Paths path){ // far score
-//        return lazy(() -> score(follower.pathBuilder().addPath(new line(follower.getPose(), path.points.scorePoseFar))
-//                        .setLinearHeadingInterpolation(follower.getHeading(), path.points.scorePoseFar.getHeading()).build()));
-//    }
+    Command commandToBlob = null;
+    public Command goToDetectedBlob(){
+        commandToBlob = null;
+        return sequential(
+                lazy(() -> infinite(() -> commandToBlob = getCommandToBlob()).until(() -> commandToBlob != null)),
+                lazy(() -> commandToBlob)
+        );
+    }
+
+    public Command scoreDetectedBlob(){ // far score
+        return lazy(() -> score(Paths.line(follower.pose(), new Pose(0,0,0))));
+    }
 
     public Command shoot(){
         return sequential(
