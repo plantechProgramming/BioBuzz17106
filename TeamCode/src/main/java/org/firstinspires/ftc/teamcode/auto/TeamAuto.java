@@ -6,6 +6,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
+import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.misc.DataSaving;
 import org.firstinspires.ftc.teamcode.misc.utils.TelemetryUtils;
@@ -42,8 +43,9 @@ public abstract class TeamAuto extends TeamOpMode {
             TelemetryUtils.updateCertainTelemtries(telemetry, follower);
             DataSaving.setEndPos(follower.pose());
 //            schedule(command.periodic());
-
-            telemetry.addData("pos", command.getPathToBlob());
+            Path path = command.getPathToBlob();
+            if(path != null)
+                telemetry.addData("pos", path.endPose());
             Scheduler.execute();
             follower.update();
             telemetry.update();

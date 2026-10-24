@@ -132,13 +132,18 @@ public class PoseFunctions {
     public static Point pose2DToPoint(Pose2D pose2D) {
         return new Point(pose2D.getX(DistanceUnit.INCH), pose2D.getY(DistanceUnit.INCH));
     }
+    public static Point poseToPoint(Pose pose){ // in cm
+        return new Point(pose2DToPoint(poseToPose2D(pose)));
+    }
 
-    public static Pair<Double,Double> shortenVector(Pair<Double,Double> deltaXY, double shotenLen){
+    public static Pair<Double,Double> shortenVector(Pair<Double,Double> deltaXY, double deltaLen){
         double hypot = Math.hypot(deltaXY.first, deltaXY.second);
-        double newHypot = hypot - shotenLen;
+        double newHypot = hypot + deltaLen;
         double ratio = newHypot/hypot;
         return new Pair<>(deltaXY.first*ratio, deltaXY.second*ratio);
-
+    }
+    public static Pair<Double, Double> XYDelta(Point point1, Point point2){
+        return new Pair<>(point1.x - point2.x, point1.y - point2.y);
     }
 
     public void updateTelemetry(Telemetry telemetry){
