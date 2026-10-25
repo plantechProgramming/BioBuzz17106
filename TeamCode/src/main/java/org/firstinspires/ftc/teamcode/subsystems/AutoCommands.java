@@ -52,12 +52,7 @@ public class AutoCommands{
 
     public Path getPathToBlob(){
         if(limelight.isDetectorResultGood()){
-            Pose2D targetPose2D = limelight.getBestPoseForPickup(PoseFunctions.poseToPose2D(follower.pose()));
-            Pair<Double, Double> deltaXY = PoseFunctions.XYDelta(PoseFunctions.pose2DToPoint(targetPose2D), PoseFunctions.poseToPoint(follower.pose()));
-            Pair<Double, Double> shortenedDeltaXY = PoseFunctions.shortenVector(deltaXY, -10);
-            Pair<Double, Double> shortenedXY = new Pair<>(shortenedDeltaXY.first+deltaXY.first, shortenedDeltaXY.second+deltaXY.second);
-            Pose targetPose = PoseFunctions.pose2DToPose(new Pose2D(DistanceUnit.CM, shortenedXY.first, shortenedXY.second,
-                    AngleUnit.DEGREES, targetPose2D.getHeading(AngleUnit.DEGREES)));
+            Pose targetPose = PoseFunctions.pose2DToPose(limelight.getBestPoseForPickup(PoseFunctions.poseToPose2D(follower.pose())));
             Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent();
             return pathToBlob;
         }

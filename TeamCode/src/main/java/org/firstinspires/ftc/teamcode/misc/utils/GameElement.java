@@ -22,6 +22,9 @@ public enum GameElement {
     public double getRadiusInches() {
         return radiusInches;
     }
+    public double getRadiusCm(){
+        return unit.toCm(radiusInches);
+    }
     public DistanceUnit getUnit(){
         return unit;
     }

@@ -117,19 +117,23 @@ public class Limelight {
 
     // --------------------------blobs--------------------------------------
 
-    public List<List<Pose2D>> getBlobs(List<Pose2D> artifactPoses){
-        final double MAX_NEIGHBOR_DISTANCE = 20; // in cm
+    public List<List<Pose2D>> getBlobs(List<Pose2D> artifactPoses, List<GameElement> gameElements){
+        final double MAX_NEIGHBOR_GAP = 3; // not including the radius, cm
         List<List<Pose2D>> blobs = new ArrayList<>();
 
         for(int i=0; i<artifactPoses.size(); i++){
             List<Pose2D> currBlob = new ArrayList<>();
             Pose2D fromArtifactPose = artifactPoses.get(i);
+            GameElement fromGameElement = gameElements.get(i);
             currBlob.add(fromArtifactPose);
-            for(Pose2D toArtifactPose : artifactPoses){
+            for(int j=0; j<artifactPoses.size(); j++){
+                Pose2D toArtifactPose = artifactPoses.get(j);
+                GameElement toGameElement = gameElements.get(j);
+                double maxNeighborDis = fromGameElement.getRadiusCm()+toGameElement.getRadiusCm()+MAX_NEIGHBOR_GAP;
                 if (PoseFunctions.areEqualPoses(toArtifactPose, fromArtifactPose)){
                     continue;
                 }
-                if(disBetweenPoses(fromArtifactPose, toArtifactPose) < MAX_NEIGHBOR_DISTANCE){
+                if(disBetweenPoses(fromArtifactPose, toArtifactPose) < maxNeighborDis){
                     currBlob.add(toArtifactPose);
                 }
             }
@@ -138,8 +142,8 @@ public class Limelight {
         return blobs;
     }
 
-    public List<List<Pose2D>> getBiggestBlobs(List<Pose2D> artifactPoses){ // the biggest blobs of artifacts
-        List<List<Pose2D>> blobs = getBlobs(artifactPoses);
+    public List<List<Pose2D>> getBiggestBlobs(List<Pose2D> artifactPoses, List<GameElement> gameElements){ // the biggest blobs of artifacts
+        List<List<Pose2D>> blobs = getBlobs(artifactPoses, gameElements);
         List<List<Pose2D>> biggestBlobs = new ArrayList<>();
         int artifactsInTheBiggestBlob = 1;
 
@@ -169,7 +173,8 @@ public class Limelight {
 
     public Pose2D getBestPoseForPickup(Pose2D rPose){ // the best end point of a path that intakes the most amount of artifacts
         List<Pose2D> artifactPoses = getAbsoluteDetectorResult(rPose);
-        List<List<Pose2D>> biggestBlobs = getBiggestBlobs(artifactPoses);
+        List<GameElement> gameElements = getDetectorResultElements();
+        List<List<Pose2D>> biggestBlobs = getBiggestBlobs(artifactPoses, gameElements);
         Pose2D bestTargetPose = getBestPoseInBlob(biggestBlobs.get(0), rPose);
 
         for(List<Pose2D> blob : biggestBlobs){
