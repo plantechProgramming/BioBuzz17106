@@ -2,13 +2,14 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static com.pedropathing.ivy.groups.Groups.parallel;
 
+import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Misc.GetVelocity;
-import org.firstinspires.ftc.teamcode.Misc.InitComponents;
+import org.firstinspires.ftc.teamcode.Misc.Components;
 import org.firstinspires.ftc.teamcode.Misc.PID;
 import org.firstinspires.ftc.teamcode.Misc.RobotPose;
 import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
@@ -20,11 +21,13 @@ public class Shooter {
 
     PoseFunctions poseFuncs;
     double MAX_RPM = 6000;
-    public Shooter() {
-        shootMotor = InitComponents.shootMotor;
-        shootMotorOp = InitComponents.shootMotorOp;
+    Follower follower;
+    public Shooter(Follower follower, Components components) {
+        shootMotor = components.shootMotor;
+        shootMotorOp = components.shootMotorOp;
         shooterVel = new GetVelocity(shootMotor, 0.1);
-        poseFuncs = new PoseFunctions(new RobotPose(InitComponents.pinpoint));
+        this.follower = follower;
+        poseFuncs = new PoseFunctions(new RobotPose(follower));
     }
 
     double wantedNaivePow = 0;

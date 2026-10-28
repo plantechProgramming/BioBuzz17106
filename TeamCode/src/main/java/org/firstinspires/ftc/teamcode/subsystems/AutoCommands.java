@@ -11,6 +11,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.paths.Path;
 
+import org.firstinspires.ftc.teamcode.Misc.Components;
 import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
 import org.firstinspires.ftc.teamcode.auto.autos.paths.Paths;
 import org.firstinspires.ftc.teamcode.subsystems.Camera.Limelight;
@@ -22,19 +23,19 @@ public class AutoCommands{
     Follower follower;
     Limelight limelight;
 
-    public AutoCommands(Follower follower) {
+    public AutoCommands(Follower follower, Components components) {
 //        shooter = new Shooter();
 //        intake = new Intake();
 //        inBetween = new InBetween();
         this.follower = follower;
-        limelight = new Limelight();
+        limelight = new Limelight(components);
     }
 
-    public AutoCommands(){
+    public AutoCommands(Components components){
 //        shooter = new Shooter();
 //        intake = new Intake();
 //        inBetween = new InBetween();
-        limelight = new Limelight();
+        limelight = new Limelight(components);
     }
 
     public Command periodic(){

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
-import org.firstinspires.ftc.teamcode.Misc.InitComponents;
+import org.firstinspires.ftc.teamcode.Misc.Components;
 import org.firstinspires.ftc.teamcode.Misc.Utils.AngleFunctions;
 import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
 import org.firstinspires.ftc.teamcode.Misc.Utils.filters.PoseLowPass;
@@ -24,8 +24,8 @@ import java.util.List;
 public class Limelight {
     Limelight3A ll;
     PoseLowPass poseLowPass = new PoseLowPass(0.01, 0.01);
-    public Limelight() {
-        ll = InitComponents.ll;
+    public Limelight(Components components) {
+        ll = components.ll;
     }
 
     public Pose3D getLatestBotpose() throws NullPointerException{ // LLCords

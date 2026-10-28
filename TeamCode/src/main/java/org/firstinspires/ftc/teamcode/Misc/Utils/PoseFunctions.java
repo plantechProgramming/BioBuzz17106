@@ -47,12 +47,12 @@ public class PoseFunctions {
     }
 
     public boolean isFar(){
-        return robotPose.getX() > 60;
+        return robotPose.xFTC() > 60;
     }
     public Pair<Double, Double> getXYDiffToPoint(Pose2D point){
         double pointX = point.getX(DistanceUnit.CM);
         double pointY = point.getY(DistanceUnit.CM);
-        return new Pair<>(pointX-robotPose.getX(), pointY-robotPose.getY());
+        return new Pair<>(pointX-robotPose.xFTC(), pointY-robotPose.yFTC());
     }
     public double getPointToGoalAngle(Pose2D point1){
         double x1 = point1.getX(DistanceUnit.CM);

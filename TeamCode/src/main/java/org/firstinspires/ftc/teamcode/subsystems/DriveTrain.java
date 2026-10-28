@@ -2,26 +2,16 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static com.pedropathing.ivy.groups.Groups.parallel;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.pedropathing.api.Paths;
-import com.pedropathing.drivetrain.DrivePowers;
-import com.pedropathing.follower.Follower;
-import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.commands.Commands;
-import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Misc.InitComponents;
+import org.firstinspires.ftc.teamcode.Misc.Components;
 import org.firstinspires.ftc.teamcode.Misc.PID;
+import org.firstinspires.ftc.teamcode.Misc.RobotPose;
 import org.firstinspires.ftc.teamcode.Misc.Utils.TelemetryUtils;
 
 @Config
@@ -29,12 +19,14 @@ public class DriveTrain {
     private DcMotorEx BR, BL, FR, FL;
     public static double Kp = 0.034, Ki = 3e-9, Kd = 2.5, Kf = 0; // prev kp = 0.0325, ki = 0, kd = 2.1, kf=0
     private PID pid;
+    private RobotPose robotPose;
 
-    public DriveTrain() {
-        this.BL = InitComponents.BL;
-        this.BR = InitComponents.BR;
-        this.FL = InitComponents.FL;
-        this.FR = InitComponents.FR;
+    public DriveTrain(Components components) {
+        this.BL = components.BL;
+        this.BR = components.BR;
+        this.FL = components.FL;
+        this.FR = components.FR;
+        this.robotPose = components.robotPose;
         pid = new PID(Kp, Ki, Kd, Kf);// prev GOOD p = 0.022, i = 0.00000001, d = 0.000001, f = 0
     }
 
@@ -101,25 +93,25 @@ public class DriveTrain {
         return setPower(-pow, -pow, pow, pow);
     }
 
-    public static void setDriveToBrakeMode(){
-        InitComponents.BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        InitComponents.BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        InitComponents.FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        InitComponents.FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    public void setDriveToBrakeMode(){
+        BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public static void setDriveToFloatMode(){
-        InitComponents.BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        InitComponents.BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        InitComponents.FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        InitComponents.FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    public void setDriveToFloatMode(){
+        BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
     public void updateTelemetry(Telemetry telemetry){
         TelemetryUtils.addTitle(telemetry, "starting drive telemetry");
-        telemetry.addData("odo x", pinpoint.getPosX(DistanceUnit.CM));
-        telemetry.addData("odo y", pinpoint.getPosY(DistanceUnit.CM));
-        telemetry.addData("heading", pinpoint.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("odo x", robotPose.xFTC());
+        telemetry.addData("odo y", robotPose.yFTC());
+        telemetry.addData("heading", robotPose.headingFTC());
         telemetry.addData("FL pow", FL.getPower());
         telemetry.addData("FR pow", FR.getPower());
         telemetry.addData("BL pow", BL.getPower());

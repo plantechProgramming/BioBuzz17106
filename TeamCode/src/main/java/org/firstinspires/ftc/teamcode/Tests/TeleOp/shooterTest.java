@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.Tests.TeleOp;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.dashboardTelemetry;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.ivy.Scheduler;
@@ -19,17 +17,15 @@ public class shooterTest extends TeamOpMode {
 
     @Override
     protected void run() {
-        AutoCommands commands = new AutoCommands();
+        AutoCommands commands = new AutoCommands(components);
         while(opModeIsActive()){
             commands.shooter.variableShoot(gamepad1.dpad_up, gamepad1.dpad_down, .01);
 
             if(gamepad1.a){
                 schedule(commands.shoot());
             }
-            commands.shooter.updateTelemetry(dashboardTelemetry);
             commands.shooter.updateTelemetry(telemetry);
             telemetry.update();
-            dashboardTelemetry.update();
             schedule(commands.periodic());
             Scheduler.execute();
         }

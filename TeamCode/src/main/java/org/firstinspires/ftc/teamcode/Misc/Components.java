@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Misc;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -11,19 +10,19 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 
-public class InitComponents {
+public class Components {
     HardwareMap hardwareMap;
 
-    public static CRServo SL,SR;
-    public static DcMotorEx FL, FR, BL, BR; //odometry is for testing purposes
-    public static DcMotorEx inBetweenMotor, shootMotor, shootMotorOp,intakeMotor; //odometry is for testing purposes
-    public static Telemetry dashboardTelemetry;
-    public static Limelight3A ll;
-    public static CameraName logiCam;
-    public static FtcDashboard dashboard;
+    public CRServo SL,SR;
+    public DcMotorEx FL, FR, BL, BR; //odometry is for testing purposes
+    public DcMotorEx inBetweenMotor, shootMotor, shootMotorOp,intakeMotor; //odometry is for testing purposes
+    public Telemetry dashboardTelemetry;
+    public Limelight3A ll;
+    public CameraName logiCam;
+    public FtcDashboard dashboard;
 
-    public static GoBildaPinpointDriver pinpoint;
-    public InitComponents(HardwareMap hardwareMap){
+    public RobotPose robotPose;
+    public Components(HardwareMap hardwareMap){
         this.hardwareMap = hardwareMap;
     }
     public void initDriveTrain(){ // the initialisation of the drivetrain motor is in Pedro
@@ -57,10 +56,7 @@ public class InitComponents {
         shootMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         shootMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
-    
-    public void initPinpoint(){ // the initialisation of the pinpoint is in pedro
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
-    }
+
     
     public void initDashboard(){
         dashboard = FtcDashboard.getInstance();

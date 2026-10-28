@@ -1,44 +1,38 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
+
+import static com.pedropathing.ivy.Scheduler.schedule;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.pedropathing.api.Paths;
-import com.pedropathing.follower.Follower;
+import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Misc.Utils.DashboardCanvas;
-import org.firstinspires.ftc.teamcode.Misc.pedro.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.subsystems.PedroDriveTrain;
 
 @Config
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(group = "teleOp")
 public class TeleOp extends TeamOpMode {
-    Follower follower;
-
-    @Override
-    public void postInit() {
-        follower = Constants.create(hardwareMap);
-    }
 
     @Override
     protected void run() {
+        follower.setPose(new Pose(72, 72, Math.toRadians(0)));
         ElapsedTime elapsedTime = new ElapsedTime();
-        DriveTrain drivetrain = new DriveTrain();
+        DriveTrain drivetrain = new DriveTrain(components);
         PedroDriveTrain pedroDriveTrain = new PedroDriveTrain(follower);
         while(opModeIsActive()){
-            if(!follower.following()){
-                pedroDriveTrain.driveWithPedro(gamepad1, elapsedTime);
-            }
-            pedroDriveTrain.pedroGoToPose(gamepad1.a);
+            schedule(pedroDriveTrain.driveWithPedro(gamepad1, elapsedTime));
+
 
             drivetrain.updateTelemetry(telemetry);
             new DashboardCanvas()
-                    .addPreciseRobot(pinpoint.getPosition());
+                    .addPreciseRobot(components.robotPose.ftc());
             telemetry.addData("drive state", follower.mode());
+            telemetry.addData("pedroPose", follower.pose());
             telemetry.update();
+            Scheduler.execute();
             follower.update();
         }
     }

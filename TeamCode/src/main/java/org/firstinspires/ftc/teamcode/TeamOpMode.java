@@ -1,46 +1,43 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.dashboardTelemetry;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.ll;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.logiCam;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
-
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.pedropathing.follower.Follower;
+import com.pedropathing.ivy.Scheduler;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
-import org.firstinspires.ftc.teamcode.Misc.InitComponents;
+import org.firstinspires.ftc.teamcode.Misc.Components;
+import org.firstinspires.ftc.teamcode.Misc.RobotPose;
+import org.firstinspires.ftc.teamcode.Misc.pedro.Constants;
 
 
 public abstract class TeamOpMode extends LinearOpMode {
-    InitComponents initMotors;
-
+    protected Components components;
+    protected Follower follower;
+    protected RobotPose robotPose;
     private void initAll(){
-        initMotors.initDriveTrain();
-//        initMotors.initIntake();
-//        initMotors.initInBetween();
-//        initMotors.initShooter();
-        initMotors.initPinpoint();
-        initMotors.initDashboard();
-        initMotors.initLL();
-        initMotors.initLogiCam();
+        components.initDriveTrain();
+//        components.initIntake();
+//        components.initInBetween();
+//        components.initShooter();
+        components.initDashboard();
+        components.initLL();
+        components.initLogiCam();
     }
 
     private void initThings(){ // random things that need to be initialized here
-        telemetry = new MultipleTelemetry(telemetry, dashboardTelemetry);
+        telemetry = new MultipleTelemetry(telemetry, components.dashboardTelemetry);
+        follower = Constants.create(hardwareMap);
+        Scheduler.reset();
+        follower.update();
+        components.robotPose = new RobotPose(follower);
+        this.robotPose = components.robotPose;
     }
     @Override
     public void runOpMode() throws InterruptedException  {
-        initMotors = new InitComponents(hardwareMap);
+        components = new Components(hardwareMap);
         initAll();
         initThings();
         postInit();
-        pinpoint.resetPosAndIMU();
         waitForStart();
 
         if (opModeIsActive()) {

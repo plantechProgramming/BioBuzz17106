@@ -1,17 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems.Camera;
 
-
-import static com.pedropathing.ivy.Scheduler.schedule;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.ll;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
-
 import android.util.Pair;
 import android.util.Size;
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.pedropathing.follower.Follower;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.FocusControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
@@ -21,12 +15,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.Misc.InitComponents;
+import org.firstinspires.ftc.teamcode.Misc.Components;
 import org.firstinspires.ftc.teamcode.Misc.RobotPose;
 import org.firstinspires.ftc.teamcode.Misc.Utils.Alliance;
 import org.firstinspires.ftc.teamcode.Misc.Utils.PoseFunctions;
 import org.firstinspires.ftc.teamcode.Misc.Utils.filters.LowPass;
-import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagClusterDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -51,10 +44,13 @@ public class AprilTagLocalization {
     Telemetry telemetry;
     PoseFunctions poseFuncs;
     LowPass lowPass = new LowPass(0.03);
-
-    public AprilTagLocalization(Telemetry telemetry) {
+    Follower follower;
+    private Components components;
+    public AprilTagLocalization(Telemetry telemetry, Follower follower, Components components) {
         this.telemetry = telemetry;
-        this.poseFuncs = new PoseFunctions(new RobotPose(InitComponents.pinpoint));
+        this.follower = follower;
+        this.poseFuncs = new PoseFunctions(new RobotPose(follower));
+        this.components = components;
     }
 
     public void initProcessor() {
@@ -67,12 +63,12 @@ public class AprilTagLocalization {
                 .build();
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(InitComponents.logiCam);
+        builder.setCamera(components.logiCam);
 
         builder.addProcessor(aprilTag);
         builder.setCameraResolution(new Size(640, 480));
         visionPortal = builder.build();
-        InitComponents.dashboard.startCameraStream(visionPortal, 60);
+        components.dashboard.startCameraStream(visionPortal, 60);
 
     }
 
@@ -96,7 +92,6 @@ public class AprilTagLocalization {
         // contrast, saturation and brightness are saved in the cam?
     }
 
-    DriveTrain driveTrain = new DriveTrain();
     public void detectTags() {
         ArrayList<AprilTagDetection> currentDetections = aprilTag.getDetections();
         numDetected = currentDetections.size();

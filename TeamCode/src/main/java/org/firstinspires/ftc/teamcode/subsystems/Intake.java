@@ -4,7 +4,7 @@ import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.Misc.InitComponents;
+import org.firstinspires.ftc.teamcode.Misc.Components;
 
 public class Intake {
     DcMotorEx intakeMotor;
@@ -12,8 +12,8 @@ public class Intake {
     double OUT_POWER = -1;
     double IN_POWER = 1;
 
-    public Intake() {
-        intakeMotor = InitComponents.intakeMotor;
+    public Intake(Components components) {
+        intakeMotor = components.intakeMotor;
     }
 
     public Command take(){

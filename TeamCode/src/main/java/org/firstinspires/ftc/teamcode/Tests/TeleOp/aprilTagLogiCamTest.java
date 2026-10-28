@@ -1,24 +1,12 @@
 package org.firstinspires.ftc.teamcode.Tests.TeleOp;
 
-import static com.pedropathing.ivy.Scheduler.execute;
-import static com.pedropathing.ivy.Scheduler.schedule;
-
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.dashboardTelemetry;
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.pedropathing.follower.Follower;
-import com.pedropathing.ivy.Scheduler;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Misc.Utils.Alliance;
-import org.firstinspires.ftc.teamcode.Misc.pedro.Constants;
 import org.firstinspires.ftc.teamcode.TeamOpMode;
-import org.firstinspires.ftc.teamcode.subsystems.AutoCommands;
 import org.firstinspires.ftc.teamcode.subsystems.Camera.AprilTagLocalization;
-import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 /**
@@ -28,7 +16,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Config
 @TeleOp(group = "teleop tests")
 public class aprilTagLogiCamTest extends TeamOpMode {
-    AprilTagLocalization tagLocalization = new AprilTagLocalization(telemetry);
+    AprilTagLocalization tagLocalization = new AprilTagLocalization(telemetry, follower, components);
 
     @Override
     public void postInit(){
@@ -44,7 +32,7 @@ public class aprilTagLogiCamTest extends TeamOpMode {
         while (opModeIsActive()) {
             tagLocalization.detectTags();
             telemetry.update();
-            pinpoint.update();
+            follower.update();
         }
     }
 

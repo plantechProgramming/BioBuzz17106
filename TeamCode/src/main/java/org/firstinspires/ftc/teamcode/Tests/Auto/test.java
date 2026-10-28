@@ -5,8 +5,6 @@ import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.ll;
-
 import com.pedropathing.ivy.Command;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
@@ -22,14 +20,14 @@ public class test extends TeamAuto {
     public void postInit(){
 //        isFar = true;
         Alliance.set(Alliance.BLUE);
-        ll.start();
+        components.ll.start();
     }
 
     @Override
     public Command autoRoutine() {
         return sequential(
-//                follow(follower,
-//                        line(new Pose(72, 72, Math.toRadians(0)), new Pose(0,0,Math.toRadians(0))).constant(Math.toRadians(0)))
+                follow(follower,
+                        line(new Pose(72, 72, Math.toRadians(0)), new Pose(72,10,Math.toRadians(0))).constant(Math.toRadians(0)))
 //                repeat(sequential(
 //                        command.goToDetectedBlob(),
 //                        command.scoreDetectedBlob(path),

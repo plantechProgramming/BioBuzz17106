@@ -19,14 +19,12 @@ import org.firstinspires.ftc.teamcode.subsystems.AutoCommands;
 public abstract class TeamAuto extends TeamOpMode {
     protected AutoCommands command;
     protected Paths path;
-    protected Follower follower;
 //    protected Boolean isFar;
 
     @Override
     public void run(){
         Scheduler.reset();
         path = new Paths();
-        follower = Constants.create(hardwareMap);
         follower.setPose(new Pose(72, 72, Math.toRadians(0)));
 //        if(isFar){
 ////            follower.setPose(path.points.get("startFar"));
@@ -35,7 +33,7 @@ public abstract class TeamAuto extends TeamOpMode {
 ////            follower.setPose(path.points.get("start"));
 //        }
         follower.update();
-        command = new AutoCommands(follower);
+        command = new AutoCommands(follower, components);
         schedule(autoRoutine());
         while (opModeIsActive()) {
             TelemetryUtils.updateCertainTelemtries(telemetry, follower);

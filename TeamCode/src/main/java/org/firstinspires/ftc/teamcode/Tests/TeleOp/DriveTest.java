@@ -2,53 +2,36 @@ package org.firstinspires.ftc.teamcode.Tests.TeleOp;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
 
-import static org.firstinspires.ftc.teamcode.Misc.InitComponents.pinpoint;
-
-import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Scheduler;
+import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Misc.Utils.DashboardCanvas;
-import org.firstinspires.ftc.teamcode.Misc.pedro.Constants;
 import org.firstinspires.ftc.teamcode.TeamOpMode;
 import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.subsystems.PedroDriveTrain;
 
 @TeleOp(group = "teleop tests")
 public class DriveTest extends TeamOpMode {
 
     @Override
-    protected void postInit(){
-        Follower follower = Constants.create(hardwareMap); // this line and the next line initialises the drivetrain motors
-        follower.update();
-        pinpoint.resetPosAndIMU();
-        sleep(250);
-    }
-    @Override
     protected void run() {
-
-        DriveTrain driveTrain = new DriveTrain();
-        DriveTrain.setDriveToBrakeMode();
-
-        double gamepadForward; //-1 to 1
-        double gamepadTurn;
-        double gamepadDrift;
-        double botHeading;
+        follower.setPose(new Pose(72, 72, Math.toRadians(0)));
+        DriveTrain driveTrain = new DriveTrain(components);
+        PedroDriveTrain pedroDriveTrain = new PedroDriveTrain(follower);
+        ElapsedTime elapsedTime = new ElapsedTime();
 
         while(opModeIsActive()){
-            gamepadForward = -gamepad1.left_stick_y;
-            gamepadTurn = gamepad1.right_stick_x;
-            gamepadDrift = gamepad1.left_stick_x;
+            schedule(pedroDriveTrain.driveWithPedro(gamepad1, elapsedTime));
 
-            botHeading = pinpoint.getHeading(AngleUnit.DEGREES);
-            schedule(driveTrain.drive(gamepadForward, gamepadDrift, gamepadTurn, botHeading+90, 1));//TODO: change for RED  -90
             driveTrain.updateTelemetry(telemetry);
             new DashboardCanvas()
-                    .addRobotAsCircle(pinpoint.getPosition())
+                    .addRobotAsCircle(robotPose.ftc())
                     .draw();
             telemetry.update();
             Scheduler.execute();
-            pinpoint.update();
+            follower.update();
         }
     }
 
