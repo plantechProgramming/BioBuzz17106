@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.Tests.Auto;
 
 import static com.pedropathing.api.Paths.line;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.groups.Groups.repeat;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
 import com.pedropathing.ivy.Command;
+import com.pedropathing.ivy.groups.Groups;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -20,14 +22,21 @@ public class test extends TeamAuto {
     public void postInit(){
 //        isFar = true;
         Alliance.set(Alliance.BLUE);
+
         components.ll.start();
     }
 
     @Override
     public Command autoRoutine() {
         return sequential(
-                follow(follower,
-                        line(new Pose(72, 72, Math.toRadians(0)), new Pose(72,10,Math.toRadians(0))).constant(Math.toRadians(0)))
+                follow(follower, line(new Pose(72, 72, Math.toRadians(0)), new Pose(72,15,Math.toRadians(0))).linear(0, Math.toRadians(90))),
+                follow(follower, line(new Pose(72, 15, Math.toRadians(90)), new Pose(72,72,Math.toRadians(0))).linear(Math.toRadians(90), Math.toRadians(0))),
+                follow(follower, line(new Pose(72, 72, Math.toRadians(0)), new Pose(72,15,Math.toRadians(0))).linear(0, Math.toRadians(90))),
+                follow(follower, line(new Pose(72, 15, Math.toRadians(90)), new Pose(72,72,Math.toRadians(0))).linear(Math.toRadians(90), Math.toRadians(0))),
+                follow(follower, line(new Pose(72, 72, Math.toRadians(0)), new Pose(72,15,Math.toRadians(0))).linear(0, Math.toRadians(90))),
+                follow(follower, line(new Pose(72, 15, Math.toRadians(90)), new Pose(72,72,Math.toRadians(0))).linear(Math.toRadians(90), Math.toRadians(0)))
+
+
 //                repeat(sequential(
 //                        command.goToDetectedBlob(),
 //                        command.scoreDetectedBlob(path),
