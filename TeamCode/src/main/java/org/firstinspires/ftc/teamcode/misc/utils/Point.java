@@ -28,6 +28,10 @@ public class Point {
         this.y = y;
     }
 
+    public double distanceTo(Point p) {
+        return Math.sqrt(Math.pow(x - p.x, 2) + Math.pow(y - p.y, 2));
+    }
+
     @Override
     public String toString(){
 
