@@ -25,7 +25,7 @@ public abstract class TeamAuto extends TeamOpMode {
     public void run(){
         Scheduler.reset();
         path = new Paths();
-        follower.setPose(new Pose(72, 72, Math.toRadians(0)));
+        follower.setPose(new Pose(70.75, 70.75, Math.toRadians(-90)));
 //        if(isFar){
 ////            follower.setPose(path.points.get("startFar"));
 //        }
