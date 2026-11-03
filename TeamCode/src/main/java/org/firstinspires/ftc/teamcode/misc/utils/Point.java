@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.misc.utils;
 
+import android.util.Pair;
+
 public class Point {
     public double x;
     public double y;
@@ -30,6 +32,10 @@ public class Point {
 
     public double distanceTo(Point p) {
         return Math.sqrt(Math.pow(x - p.x, 2) + Math.pow(y - p.y, 2));
+    }
+
+    public static Point pairToPoint(Pair<Double, Double> xyPair){
+        return new Point(xyPair.first, xyPair.second);
     }
 
     @Override

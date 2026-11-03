@@ -32,8 +32,20 @@ public class Square {
     public Point getCenter(){
         return new Point((topLeft.getX() + bottomRight.getX())/2, (topLeft.getY() + bottomRight.getY())/2);
     }
-    public double getWidth(){
-        return topLeft.distanceTo(topRight);
+
+    public double getAngle(){
+        return Math.atan2(bottomRight.getY() - topLeft.getY(), topLeft.getX() - bottomRight.getX());
+    }
+    public boolean isPointInRect(Point p){
+        Point center = getCenter();
+        Point relativeCenter = new Point(p.getX() - center.getX(), p.getY() - center.getY());
+        Point rotatedPoint = Point.pairToPoint(PoseFunctions.rotation2D(relativeCenter.getX(), relativeCenter.getY(), getAngle()));
+        return isPointInNotRotatedRect(rotatedPoint);
+    }
+
+    public boolean isPointInNotRotatedRect(Point p){
+        return p.getX() > topLeft.getX() && p.getX() < topRight.getX()
+                && p.getY() > bottomRight.getY() && p.getY() < topRight.getY();
     }
 
 }
