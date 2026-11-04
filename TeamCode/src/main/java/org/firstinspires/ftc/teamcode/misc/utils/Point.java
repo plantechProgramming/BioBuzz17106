@@ -2,9 +2,12 @@ package org.firstinspires.ftc.teamcode.misc.utils;
 
 import android.util.Pair;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+
 public class Point {
-    public double x;
-    public double y;
+    private double x;
+    private double y;
     public Point(double x, double y) {
         this.x = x;
         this.y = y;
@@ -36,6 +39,23 @@ public class Point {
 
     public static Point pairToPoint(Pair<Double, Double> xyPair){
         return new Point(xyPair.first, xyPair.second);
+    }
+
+    public static boolean isPointInRect(Point p, Point bottomLeft, double width, double height, double rotateAngle, Pose2D rPose){ // can be rotated rect
+        Point relPointRobotCords = new Point(p.getX() - rPose.getX(DistanceUnit.CM), p.getY() - rPose.getY(DistanceUnit.CM));
+        Point relBottomLeftRobotCords = new Point(bottomLeft.getX() - rPose.getX(DistanceUnit.CM), bottomLeft.getY() - rPose.getY(DistanceUnit.CM));
+        Point rotatedPoint = pairToPoint(PoseFunctions.rotation2D(relPointRobotCords.getX(), relPointRobotCords.getY(), rotateAngle));
+        Point rotatedBottomLeft = pairToPoint(PoseFunctions.rotation2D(relBottomLeftRobotCords.getX(), relBottomLeftRobotCords.getY(), rotateAngle));
+        return isPointInRect(rotatedPoint, rotatedBottomLeft, width, height);
+    }
+    public static boolean isPointInRect(Point p, Point bottomLeft, double width, double height){ // not rotated rect
+        return p.getX()<bottomLeft.getX()+width && p.getX()>bottomLeft.getX() &&
+                p.getY()<bottomLeft.getY()+height && p.getY()>bottomLeft.getY();
+    }
+
+    public static Point transformPoint(Point p, double dis, double deg){
+        double rad = Math.toRadians(deg);
+        return new Point(p.getX()+dis*Math.cos(rad), p.getY()+dis*Math.sin(rad));
     }
 
     @Override

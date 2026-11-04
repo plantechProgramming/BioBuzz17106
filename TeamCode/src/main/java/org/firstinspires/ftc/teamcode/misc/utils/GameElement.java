@@ -41,4 +41,9 @@ public enum GameElement {
                 throw new IllegalArgumentException("No game element found with such name");
         }
     }
+
+    public static boolean isGameElementGoodForPickup(GameElement element){
+        return !((Alliance.get() == Alliance.BLUE && element == GameElement.RED_NECTAR) ||
+                (Alliance.get() == Alliance.RED && element == GameElement.BLUE_NECTAR));
+    }
 }

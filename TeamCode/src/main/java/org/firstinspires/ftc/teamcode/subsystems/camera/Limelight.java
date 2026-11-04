@@ -187,4 +187,23 @@ public class Limelight {
         return bestTargetPose;
     }
 
+    public List<Pair<Point, GameElement>> getElementsInRay(Pose2D rPose, double rayAngle){
+        final double RAY_WIDTH = 10; // cm
+        final double RAY_HEIGHT = 400; // cm
+        List<GameElement> gameElements = getDetectorResultElements();
+        List<Pose2D> elementsPoses = getAbsoluteDetectorResult(rPose);
+        List<Pair<Point, GameElement>> elementsInRay = new ArrayList<>();
+        for(int i=0; i<elementsPoses.size(); i++){
+            Point elementPoint = PoseFunctions.pose2DToPoint(elementsPoses.get(i));
+            Point bottomLeftRect = Point.transformPoint(PoseFunctions.pose2DToPoint(rPose), RAY_WIDTH/2, rayAngle);
+            if(Point.isPointInRect(elementPoint, bottomLeftRect, RAY_WIDTH, RAY_HEIGHT, rayAngle, rPose)){
+                if(!GameElement.isGameElementGoodForPickup(gameElements.get(i))){
+                    break;
+                }
+                elementsInRay.add(new Pair<>(elementPoint, gameElements.get(i)));
+            }
+        }
+        return elementsInRay;
+    }
+
 }
