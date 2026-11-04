@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.misc.utils.AngleFunctions;
 import org.firstinspires.ftc.teamcode.misc.utils.Extras;
 import org.firstinspires.ftc.teamcode.misc.utils.GameElement;
 import org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions;
+import org.firstinspires.ftc.teamcode.misc.utils.Ray;
 import org.firstinspires.ftc.teamcode.misc.utils.filters.PoseLowPass;
 import org.firstinspires.ftc.teamcode.misc.utils.Point;
 
@@ -187,12 +188,12 @@ public class Limelight {
         return bestTargetPose;
     }
 
-    public List<Pair<Point, GameElement>> getElementsInRay(Pose2D rPose, double rayAngle){
+    public Ray getRay(Pose2D rPose, double rayAngle){
         final double RAY_WIDTH = 10; // cm
         final double RAY_HEIGHT = 400; // cm
         List<GameElement> gameElements = getDetectorResultElements();
         List<Pose2D> elementsPoses = getAbsoluteDetectorResult(rPose);
-        List<Pair<Point, GameElement>> elementsInRay = new ArrayList<>();
+        Ray ray = new Ray(new ArrayList<>());
         for(int i=0; i<elementsPoses.size(); i++){
             Point elementPoint = PoseFunctions.pose2DToPoint(elementsPoses.get(i));
             Point bottomLeftRect = Point.transformPoint(PoseFunctions.pose2DToPoint(rPose), RAY_WIDTH/2, rayAngle);
@@ -200,10 +201,28 @@ public class Limelight {
                 if(!GameElement.isGameElementGoodForPickup(gameElements.get(i))){
                     break;
                 }
-                elementsInRay.add(new Pair<>(elementPoint, gameElements.get(i)));
+                ray.addElement(new Pair<>(elementPoint, gameElements.get(i)));
             }
         }
-        return elementsInRay;
+        return ray;
+    }
+
+    public void getBestRay(Pose2D rPose){
+
+        for(double i=0;i<360;i += 0.5){
+            Ray currRay = getRay(rPose, i);
+
+
+        }
+    }
+    public double getScore(Ray ray){
+        final double POLLEN_VALUE = 1;
+        final double NECTAR_VALUE = 1.8; // pollen / nectar; (for tilt)
+        return 126;
+    }
+
+    public double disToPoint(double dis){
+        return (-0.0253968*dis+3.88889);
     }
 
 }
