@@ -117,8 +117,9 @@ public class Limelight {
         return detectionElements;
     }
 
-    // --------------------------blobs--------------------------------------
+    // --------------------------blobs-------------------------------------- old bad code
 
+    @Deprecated
     public List<List<Pose2D>> getBlobs(List<Pose2D> artifactPoses, List<GameElement> gameElements){
         final double MAX_NEIGHBOR_GAP = 3; // not including the radius, cm
         List<List<Pose2D>> blobs = new ArrayList<>();
@@ -144,6 +145,7 @@ public class Limelight {
         return blobs;
     }
 
+    @Deprecated
     public List<List<Pose2D>> getBiggestBlobs(List<Pose2D> artifactPoses, List<GameElement> gameElements){ // the biggest blobs of artifacts
         List<List<Pose2D>> blobs = getBlobs(artifactPoses, gameElements);
         List<List<Pose2D>> biggestBlobs = new ArrayList<>();
@@ -162,6 +164,8 @@ public class Limelight {
         }
         return biggestBlobs;
     }
+
+    @Deprecated
     public Pose2D getBestPoseInBlob(List<Pose2D> artifactPoses, Pose2D rPose){
         //TODO: make better
         Pose2D bestArtifact = artifactPoses.get(0);
@@ -173,6 +177,7 @@ public class Limelight {
         return bestArtifact;
     }
 
+    @Deprecated
     public Pose2D getBestPoseForPickup(Pose2D rPose){ // the best end point of a path that intakes the most amount of artifacts
         List<Pose2D> artifactPoses = getAbsoluteDetectorResult(rPose);
         List<GameElement> gameElements = getDetectorResultElements();
@@ -187,6 +192,7 @@ public class Limelight {
         }
         return bestTargetPose;
     }
+    // -------------------------rays----------------------------
 
     public Ray getRay(Pose2D rPose, double rayAngle){
         final double RAY_WIDTH = 10; // cm
@@ -201,27 +207,48 @@ public class Limelight {
                 if(!GameElement.isGameElementGoodForPickup(gameElements.get(i))){
                     break;
                 }
+                if(ray.size() == 4){
+                    break;
+                }
                 ray.addElement(new Pair<>(elementPoint, gameElements.get(i)));
             }
         }
         return ray;
     }
 
-    public void getBestRay(Pose2D rPose){
-
+    public Ray getBestRay(Pose2D rPose){
+        Ray bestRay = null;
+        double bestScore = Integer.MIN_VALUE;
         for(double i=0;i<360;i += 0.5){
             Ray currRay = getRay(rPose, i);
-
-
+            double currScore = getScore(currRay, currRay.getRayDis(PoseFunctions.pose2DToPoint(rPose)));
+            if(currScore > bestScore){
+                bestScore = currScore;
+                bestRay = new Ray(currRay.getRay());
+            }
         }
+        return bestRay;
     }
-    public double getScore(Ray ray){
+    public Point getBestPointForPickUp(Pose2D rPose){
+        Ray bestRay = getBestRay(rPose);
+        return bestRay.getFurthestPoint(PoseFunctions.pose2DToPoint(rPose));
+    }
+    public double getScore(Ray ray, double rayDis){
         final double POLLEN_VALUE = 1;
         final double NECTAR_VALUE = 1.8; // pollen / nectar; (for tilt)
-        return 126;
+        double score = disToValue(rayDis);
+        for(Pair<Point, GameElement> element : ray.getRay()){
+            if(element.second == GameElement.POLLEN){
+                score += POLLEN_VALUE;
+            }
+            else{ // the color of nectar doesn't matter because in the ray there should only be the nectar type we can pick up
+                score += NECTAR_VALUE;
+            }
+        }
+        return score;
     }
 
-    public double disToPoint(double dis){
+    public double disToValue(double dis){
         return (-0.0253968*dis+3.88889);
     }
 

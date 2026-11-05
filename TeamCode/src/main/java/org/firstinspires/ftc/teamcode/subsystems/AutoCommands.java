@@ -21,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.misc.RobotPose;
+import org.firstinspires.ftc.teamcode.misc.utils.Point;
 import org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions;
 import org.firstinspires.ftc.teamcode.subsystems.camera.Limelight;
 
@@ -52,7 +53,9 @@ public class AutoCommands{
 
     public Path getPathToBlob(){
         if(limelight.isDetectorResultGood()){
-            Pose targetPose = PoseFunctions.pose2DToPose(limelight.getBestPoseForPickup(PoseFunctions.poseToPose2D(follower.pose())));
+            Point targetPoint = limelight.getBestPointForPickUp(PoseFunctions.poseToPose2D(follower.pose()));
+            Pose2D targetPose2D = new Pose2D(DistanceUnit.CM, targetPoint.getX(), targetPoint.getY(), AngleUnit.DEGREES, 0);
+            Pose targetPose = PoseFunctions.pose2DToPose(targetPose2D);
             Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent();
             return pathToBlob;
         }
