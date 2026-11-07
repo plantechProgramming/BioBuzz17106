@@ -35,4 +35,12 @@ public class Ray {
 
     }
 
+    public String toString(){
+        String str = "";
+        for(Pair<Point, GameElement> element : ray){
+            str += element + " ";
+        }
+        return str;
+    }
+
 }

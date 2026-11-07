@@ -9,6 +9,7 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes.ColorResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes.DetectorResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
@@ -22,6 +23,7 @@ import org.firstinspires.ftc.teamcode.misc.utils.Ray;
 import org.firstinspires.ftc.teamcode.misc.utils.filters.PoseLowPass;
 import org.firstinspires.ftc.teamcode.misc.utils.Point;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -193,7 +195,6 @@ public class Limelight {
         return bestTargetPose;
     }
     // -------------------------rays----------------------------
-
     public Ray getRay(Pose2D rPose, double rayAngle){
         final double RAY_WIDTH = 10; // cm
         final double RAY_HEIGHT = 400; // cm
@@ -221,10 +222,12 @@ public class Limelight {
         double bestScore = Integer.MIN_VALUE;
         for(double i=0;i<360;i += 0.5){
             Ray currRay = getRay(rPose, i);
-            double currScore = getScore(currRay, currRay.getRayDis(PoseFunctions.pose2DToPoint(rPose)));
-            if(currScore > bestScore){
-                bestScore = currScore;
-                bestRay = new Ray(currRay.getRay());
+            if(currRay.size() != 0){
+                double currScore = getScore(currRay, currRay.getRayDis(PoseFunctions.pose2DToPoint(rPose)));
+                if(currScore > bestScore){
+                    bestScore = currScore;
+                    bestRay = new Ray(currRay.getRay());
+                }
             }
         }
         return bestRay;
@@ -251,5 +254,6 @@ public class Limelight {
     public double disToValue(double dis){
         return (-0.0253968*dis+3.88889);
     }
+
 
 }

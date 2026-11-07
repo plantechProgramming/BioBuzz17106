@@ -57,6 +57,7 @@ public class AutoCommands{
             Pose2D targetPose2D = new Pose2D(DistanceUnit.CM, targetPoint.getX(), targetPoint.getY(), AngleUnit.DEGREES, 0);
             Pose targetPose = PoseFunctions.pose2DToPose(targetPose2D);
             Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent();
+            System.out.println("supposed go to pse: "+ pathToBlob.endPose());
             return pathToBlob;
         }
         return null;
@@ -66,7 +67,8 @@ public class AutoCommands{
         pathToBlob = null;
         return sequential(
                 lazy(() -> infinite(() -> pathToBlob = getPathToBlob()).until(() -> pathToBlob != null)),
-                lazy(() -> follow(follower, pathToBlob))
+                lazy(() -> { System.out.println("go to pose: " + pathToBlob.endPose());
+                    return follow(follower, pathToBlob);})
         );
     }
 
