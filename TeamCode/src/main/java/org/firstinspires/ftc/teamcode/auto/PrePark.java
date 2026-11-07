@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import static com.pedropathing.api.Paths.*;
 import com.pedropathing.api.Paths;
 
@@ -12,31 +11,31 @@ import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.commands.Commands.*;
-        import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Misc.pedro.Constants;
 
-import kotlinx.coroutines.Delay;
-
-@Autonomous(name = "PrePark", group = "Autonomous")
+@Autonomous(name = "AutoPath", group = "Autonomous")
 public class PrePark extends LinearOpMode {
 
     private Follower follower;
 
+
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private final Pose start = poseFactory.of(55, 8, 90);
-    private final Pose path1 = poseFactory.of(55, 10, 90);
-    private final Pose point2Start = poseFactory.of(55, 10, 90);
-    private final Pose point2 = poseFactory.of(129.4328, 24.9154, 180);
+    private final Pose path1 = poseFactory.of(55, 15, 90);
+    private final Pose point2Start = poseFactory.of(55, 15, 90);
+    private final Pose point2 = poseFactory.of(127.1897, 30.1492, 180);
 
     // Autonomous routine
     public Command autoRoutine() {
         return sequential(
                 follow(follower, path1()),
+                waitMs(1000),
                 follow(follower, path2())
         );
     }
