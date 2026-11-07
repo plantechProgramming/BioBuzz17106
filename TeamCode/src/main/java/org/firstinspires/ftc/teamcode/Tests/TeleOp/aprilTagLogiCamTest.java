@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Tests.TeleOp;
+package org.firstinspires.ftc.teamcode.tests.teleop;
 
 import static com.pedropathing.ivy.Scheduler.execute;
 import static com.pedropathing.ivy.Scheduler.schedule;
