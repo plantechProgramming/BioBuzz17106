@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions.disBetween
 
 import android.util.Pair;
 
+import com.pedropathing.math.Pose;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes.ColorResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes.DetectorResult;
@@ -196,7 +197,7 @@ public class Limelight {
     }
     // -------------------------rays----------------------------
     public Ray getRay(Pose2D rPose, double rayAngle){
-        final double RAY_WIDTH = 10; // cm
+        final double RAY_WIDTH = 40; // cm
         final double RAY_HEIGHT = 400; // cm
         List<GameElement> gameElements = getDetectorResultElements();
         List<Pose2D> elementsPoses = getAbsoluteDetectorResult(rPose);
@@ -223,7 +224,9 @@ public class Limelight {
         for(double i=0;i<360;i += 0.5){
             Ray currRay = getRay(rPose, i);
             if(currRay.size() != 0){
+                System.out.println("ray: " + currRay);
                 double currScore = getScore(currRay, currRay.getRayDis(PoseFunctions.pose2DToPoint(rPose)));
+                System.out.println("score: " + currScore);
                 if(currScore > bestScore){
                     bestScore = currScore;
                     bestRay = new Ray(currRay.getRay());
@@ -234,6 +237,7 @@ public class Limelight {
     }
     public Point getBestPointForPickUp(Pose2D rPose){
         Ray bestRay = getBestRay(rPose);
+        System.out.println("best ray: " + bestRay.getRay());
         return bestRay.getFurthestPoint(PoseFunctions.pose2DToPoint(rPose));
     }
     public double getScore(Ray ray, double rayDis){

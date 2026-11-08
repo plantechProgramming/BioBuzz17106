@@ -21,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.misc.RobotPose;
+import org.firstinspires.ftc.teamcode.misc.utils.Extras;
 import org.firstinspires.ftc.teamcode.misc.utils.Point;
 import org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions;
 import org.firstinspires.ftc.teamcode.subsystems.camera.Limelight;
@@ -57,7 +58,6 @@ public class AutoCommands{
             Pose2D targetPose2D = new Pose2D(DistanceUnit.CM, targetPoint.getX(), targetPoint.getY(), AngleUnit.DEGREES, 0);
             Pose targetPose = PoseFunctions.pose2DToPose(targetPose2D);
             Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent();
-            System.out.println("supposed go to pse: "+ pathToBlob.endPose());
             return pathToBlob;
         }
         return null;

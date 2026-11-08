@@ -43,9 +43,6 @@ public abstract class TeamAuto extends TeamOpMode {
             TelemetryUtils.updateCertainTelemtries(telemetry, follower);
             DataSaving.setEndPos(follower.pose());
 //            schedule(command.periodic());
-            Path path = command.getPathToBlob();
-            if(path != null)
-                telemetry.addData("pos", path.endPose());
             Scheduler.execute();
             follower.update();
             telemetry.update();

@@ -130,7 +130,7 @@ public class PoseFunctions {
     }
 
     public static Point pose2DToPoint(Pose2D pose2D) {
-        return new Point(pose2D.getX(DistanceUnit.INCH), pose2D.getY(DistanceUnit.INCH));
+        return new Point(pose2D.getX(DistanceUnit.CM), pose2D.getY(DistanceUnit.CM));
     }
     public static Point poseToPoint(Pose pose){ // in cm
         return new Point(pose2DToPoint(poseToPose2D(pose)));
