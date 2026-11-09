@@ -218,27 +218,29 @@ public class Limelight {
         return ray;
     }
 
-    public Ray getBestRay(Pose2D rPose){
+    public Pair<Ray, Double> getBestRay(Pose2D rPose){
         Ray bestRay = null;
         double bestScore = Integer.MIN_VALUE;
+        double bestAngle = Integer.MIN_VALUE;
         for(double i=0;i<360;i += 0.5){
             Ray currRay = getRay(rPose, i);
             if(currRay.size() != 0){
-                System.out.println("ray: " + currRay);
                 double currScore = getScore(currRay, currRay.getRayDis(PoseFunctions.pose2DToPoint(rPose)));
-                System.out.println("score: " + currScore);
                 if(currScore > bestScore){
                     bestScore = currScore;
                     bestRay = new Ray(currRay.getRay());
+                    bestAngle = i;
                 }
             }
         }
-        return bestRay;
+        return new Pair<>(bestRay, bestAngle);
     }
     public Point getBestPointForPickUp(Pose2D rPose){
-        Ray bestRay = getBestRay(rPose);
-        System.out.println("best ray: " + bestRay.getRay());
-        return bestRay.getFurthestPoint(PoseFunctions.pose2DToPoint(rPose));
+        final double robotLength = 43; // cm
+        Pair<Ray, Double> bestRay = getBestRay(rPose);
+        System.out.println("best ray: " + bestRay.first.getRay());
+        Point bestPoint = Point.transformPoint(bestRay.first.getFurthestPoint(PoseFunctions.pose2DToPoint(rPose)), robotLength/2, bestRay.second);
+        return  bestPoint;
     }
     public double getScore(Ray ray, double rayDis){
         final double POLLEN_VALUE = 1;
@@ -256,7 +258,7 @@ public class Limelight {
     }
 
     public double disToValue(double dis){
-        return (-0.0253968*dis+3.88889);
+        return (-0.0065*dis+1);
     }
 
 
