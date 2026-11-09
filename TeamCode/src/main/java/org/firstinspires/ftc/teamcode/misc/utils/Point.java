@@ -5,6 +5,8 @@ import android.util.Pair;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
+import java.util.List;
+
 public class Point {
     private double x;
     private double y;
@@ -56,6 +58,16 @@ public class Point {
     public static Point transformPoint(Point p, double dis, double deg){
         double rad = Math.toRadians(deg);
         return new Point(p.getX()+dis*Math.cos(rad), p.getY()+dis*Math.sin(rad));
+    }
+    public static void sortPointsByDisToPoint(Point p, List<Point> points){
+        if(p == null || points == null){
+            return;
+        }
+        points.sort((o1, o2) -> {
+            double dist1 = o1.distanceTo(p);
+            double dist2 = o2.distanceTo(p);
+            return Double.compare(dist1, dist2);
+        });
     }
 
     @Override

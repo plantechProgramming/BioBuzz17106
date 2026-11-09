@@ -41,4 +41,13 @@ public class Extras {
         return returnList;
     }
 
+    public static <T> T[] getArrayFromList(List<T> list){
+        int size = list.size();
+        T[] arr = (T[]) new Object[size];
+        for(int i=0;i<list.size();i++){
+            arr[i] = list.get(i);
+        }
+        return arr;
+    }
+
 }
