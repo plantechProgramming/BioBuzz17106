@@ -70,12 +70,12 @@ public class Point {
         });
     }
     public boolean inYourHalfOfField(){
-        if(p.getX() > -PoseFunctions.LEN_FIELD/2 && p.getX() < PoseFunctions.LEN_FIELD/2){
+        if(x > -PoseFunctions.LEN_FIELD/2 && x < PoseFunctions.LEN_FIELD/2){
             if(Alliance.get() == Alliance.RED){
-                return p.getY() > 0;
+                return y > 0;
             }
             else{
-                return p.getY() < 0;
+                return y < 0;
             }
         }
         return false;
