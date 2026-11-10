@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.autos.paths;
 
+import static com.pedropathing.api.Paths.curve;
 import static com.pedropathing.api.Paths.line;
 
 import android.util.Pair;
@@ -17,23 +18,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Paths {
-    public Points points = new Points();
+    public Points p = new Points();
     private Map<String, Path> paths = new HashMap<>();
 
     public Paths(){
         if(Alliance.get() == Alliance.BLUE) {
-            points.poseFactory = points.poseFactory.mirrorX(
+            p.poseFactory = p.poseFactory.mirrorX(
                     (DistanceUnit.INCH.fromCm(PoseFunctions.LEN_FIELD))/2); // mirror to the points to the blue side
         }
-        points.setPoints();
+        p.setPoints();
         setPaths();
     }
+
     private void setPaths(){
-//        paths.put("start to score", line(points.get("start"), points.get("score")));
+        paths.put("start to garden", curve(p.get("start"), p.get("control 1"), p.get("garden")).linear(p.get("start").heading(), p.get("garden").heading()));
+
     }
 
     public Path get(String pathName){
         return paths.get(pathName);
     }
-
 }

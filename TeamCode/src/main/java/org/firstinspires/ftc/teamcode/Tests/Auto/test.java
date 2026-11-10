@@ -20,22 +20,13 @@ public class test extends TeamAuto {
 
     @Override
     public void postInit(){
-//        isFar = true;
-        Alliance.set(Alliance.BLUE);
-        ll.start();
+        Alliance.set(Alliance.RED);
     }
 
     @Override
     public Command autoRoutine() {
         return sequential(
-//                follow(follower,
-//                        line(new Pose(72, 72, Math.toRadians(0)), new Pose(0,0,Math.toRadians(0))).constant(Math.toRadians(0)))
-//                repeat(sequential(
-//                        command.goToDetectedBlob(),
-//                        command.scoreDetectedBlob(path),
-//                        follow(follower, follower.pathBuilder().addPath(new BezierLine(path.points.scorePoseFar, path.points.startPoseFar))
-//                                .setLinearHeadingInterpolation(path.points.scorePoseFar.getHeading(), path.points.startPoseFar.getHeading()).build())
-//                ), 15)
+                follow(follower, path.get("start to garden"))
         );
     }
 }
