@@ -14,7 +14,8 @@ public class Points {
     protected PoseFactory poseFactory = PoseFactory.degrees(); // .degrees meaning that pose's angle will be in deg
     private Map<String, Pose> points = new HashMap<>();
     public void setPoints(){ // blue points
-//        poses.put("start", poseFactory.of(20, 20, 180));
+        points.put("start", poseFactory.of(56, 9, 90));
+        points.put("garden", poseFactory.of(9.2, 8.8, 180));
     }
 
     public Pose get(String pointName){

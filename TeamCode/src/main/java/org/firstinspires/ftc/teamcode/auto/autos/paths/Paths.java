@@ -21,9 +21,9 @@ public class Paths {
     private Map<String, Path> paths = new HashMap<>();
 
     public Paths(){
-        if(Alliance.get() == Alliance.RED) {
+        if(Alliance.get() == Alliance.BLUE) {
             points.poseFactory = points.poseFactory.mirrorX(
-                    (DistanceUnit.INCH.fromCm(PoseFunctions.LEN_FIELD))/2); // mirror to the points to the red side
+                    (DistanceUnit.INCH.fromCm(PoseFunctions.LEN_FIELD))/2); // mirror to the points to the blue side
         }
         points.setPoints();
         setPaths();
