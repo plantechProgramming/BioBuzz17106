@@ -197,11 +197,25 @@ public class Limelight {
         return bestTargetPose;
     }
     // -------------------------rays----------------------------
+    public Pair<List<Point>, List<GameElement>> getFilteredDetections(List<Pose2D> detections, List<GameElement> gameElements){
+        List<Point> filteredDetections = new ArrayList<>();
+        List<GameElement> filteredGameElements = new ArrayList<>();
+        List<Point> points = Extras.I_To_T_ForList(detections, PoseFunctions::pose2DToPoint);
+        for(int i=0;i<points.size();i++){
+            if(points.get(i).inYourHalfOfField()){
+                filteredDetections.add(points.get(i));
+                filteredGameElements.add(gameElements.get(i));
+            }
+        }
+        return new Pair<>(filteredDetections, filteredGameElements);
+    }
     public Ray getRay(Pose2D rPose, double rayAngle){
         final double RAY_WIDTH = 40; // cm
         final double RAY_HEIGHT = 400; // cm
-        List<GameElement> gameElements = getDetectorResultElements();
-        List<Point> elementsPoints = Extras.I_To_T_ForList(getAbsoluteDetectorResult(rPose), PoseFunctions::pose2DToPoint);
+        Pair<List<Point>, List<GameElement>> filteredDetections = getFilteredDetections(
+                getAbsoluteDetectorResult(rPose), getDetectorResultElements());
+        List<GameElement> gameElements = filteredDetections.second;
+        List<Point> elementsPoints = filteredDetections.first;
         Point.sortPointsByDisToPoint(PoseFunctions.pose2DToPoint(rPose), elementsPoints);
         Ray ray = new Ray(new ArrayList<>());
         for(int i=0; i<elementsPoints.size(); i++){

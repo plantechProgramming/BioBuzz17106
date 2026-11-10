@@ -69,6 +69,17 @@ public class Point {
             return Double.compare(dist1, dist2);
         });
     }
+    public boolean inYourHalfOfField(){
+        if(p.getX() > -PoseFunctions.LEN_FIELD/2 && p.getX() < PoseFunctions.LEN_FIELD/2){
+            if(Alliance.get() == Alliance.RED){
+                return p.getY() > 0;
+            }
+            else{
+                return p.getY() < 0;
+            }
+        }
+        return false;
+    }
 
     @Override
     public String toString(){
