@@ -5,6 +5,8 @@ import android.util.Pair;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
+import static org.firstinspires.ftc.teamcode.misc.utils.Extras.ROBOT_SIZE;
+
 import java.util.List;
 
 public class Point {
@@ -70,12 +72,13 @@ public class Point {
         });
     }
     public boolean inYourHalfOfField(){
-        if(x > -PoseFunctions.LEN_FIELD/2 && x < PoseFunctions.LEN_FIELD/2){
+        final double MAX_ROBOT_SIZE = Math.max(ROBOT_SIZE.first, ROBOT_SIZE.second);
+        if(x > -PoseFunctions.LEN_FIELD/2+ MAX_ROBOT_SIZE/2 && x < PoseFunctions.LEN_FIELD/2 - MAX_ROBOT_SIZE/2){
             if(Alliance.get() == Alliance.RED){
-                return y > 0;
+                return y > MAX_ROBOT_SIZE/2;
             }
             else{
-                return y < 0;
+                return y < -MAX_ROBOT_SIZE/2;
             }
         }
         return false;

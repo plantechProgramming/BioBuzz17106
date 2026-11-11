@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Extras {
-    public static final Pair<Double, Double> ROBOT_SIZE = new Pair<>(15.43, 17.32); // width, height in that order, in inches
+    public static final Pair<Double, Double> ROBOT_SIZE = new Pair<>(22.0, 17.32); // width, height in that order, in inches
     LowPass voltageLowPass = new LowPass(0.02);
     public double getVoltageCompensatedPow(double pow, double voltage){
         voltageLowPass.update(voltage);

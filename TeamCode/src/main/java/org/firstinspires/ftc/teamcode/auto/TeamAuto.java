@@ -8,7 +8,9 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.misc.DataSaving;
+import org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions;
 import org.firstinspires.ftc.teamcode.misc.utils.TelemetryUtils;
 import org.firstinspires.ftc.teamcode.misc.pedro.Constants;
 import org.firstinspires.ftc.teamcode.TeamOpMode;
@@ -28,7 +30,7 @@ public abstract class TeamAuto extends TeamOpMode {
         Scheduler.reset();
         path = new Paths();
         follower = Constants.create(hardwareMap);
-        follower.setPose(new Pose(9, 8.5, Math.toRadians(0)));
+        follower.setPose(new Pose(DistanceUnit.INCH.fromCm(PoseFunctions.LEN_FIELD/2), DistanceUnit.INCH.fromCm(PoseFunctions.LEN_FIELD/2), Math.toRadians(90)));
         limelight = new Limelight();
 //        if(isFar){
 ////            follower.setPose(path.points.get("startFar"));
@@ -41,6 +43,7 @@ public abstract class TeamAuto extends TeamOpMode {
         schedule(autoRoutine());
         while (opModeIsActive()) {
             TelemetryUtils.updateCertainTelemtries(telemetry, follower);
+            limelight.updateTelemetry(telemetry);
             DataSaving.setEndPos(follower.pose());
 //            schedule(command.periodic());
             Scheduler.execute();

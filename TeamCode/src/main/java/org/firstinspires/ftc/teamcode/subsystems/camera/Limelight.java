@@ -250,11 +250,15 @@ public class Limelight {
         }
         return new Pair<>(bestRay, bestAngle);
     }
+    Pair<Ray, Double> bestRay;
     public Point getBestPointForPickUp(Pose2D rPose){
         final double robotLength = 43; // cm
-        Pair<Ray, Double> bestRay = getBestRay(rPose);
-        System.out.println("best ray: " + bestRay.first.getRay());
-        Point bestPoint = Point.transformPoint(bestRay.first.getFurthestPoint(PoseFunctions.pose2DToPoint(rPose)), robotLength/2, bestRay.second);
+        bestRay = getBestRay(rPose);
+        Point bestPoint = null;
+        if(bestRay.first != null){
+            System.out.println("best ray: " + bestRay.first.getRay());
+            bestPoint = Point.transformPoint(bestRay.first.getFurthestPoint(PoseFunctions.pose2DToPoint(rPose)), robotLength/2, bestRay.second);
+        }
         return  bestPoint;
     }
     public double getScore(Ray ray, double rayDis){
@@ -274,6 +278,9 @@ public class Limelight {
 
     public double disToValue(double dis){
         return (-0.0065*dis+1);
+    }
+    public void updateTelemetry(Telemetry telemetry){
+        telemetry.addData("best ray", bestRay);
     }
 
 
