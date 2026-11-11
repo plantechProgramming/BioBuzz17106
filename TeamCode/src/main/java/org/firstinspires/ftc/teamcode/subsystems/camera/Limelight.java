@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.camera;
 
+import static org.firstinspires.ftc.teamcode.misc.utils.Extras.ROBOT_SIZE;
 import static org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions.disBetweenPoses;
 
 import android.util.Pair;
@@ -252,12 +253,11 @@ public class Limelight {
     }
     Pair<Ray, Double> bestRay;
     public Point getBestPointForPickUp(Pose2D rPose){
-        final double robotLength = 43; // cm
         bestRay = getBestRay(rPose);
         Point bestPoint = null;
         if(bestRay.first != null){
             System.out.println("best ray: " + bestRay.first.getRay());
-            bestPoint = Point.transformPoint(bestRay.first.getFurthestPoint(PoseFunctions.pose2DToPoint(rPose)), robotLength/2, bestRay.second);
+            bestPoint = bestRay.first.getFurthestPoint(PoseFunctions.pose2DToPoint(rPose));
         }
         return  bestPoint;
     }

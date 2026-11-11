@@ -72,9 +72,11 @@ public class Point {
         });
     }
     public boolean inYourHalfOfField(){
-        final double MAX_ROBOT_SIZE = Math.max(ROBOT_SIZE.first, ROBOT_SIZE.second);
-        if(x > -PoseFunctions.LEN_FIELD/2+ MAX_ROBOT_SIZE/2 && x < PoseFunctions.LEN_FIELD/2 - MAX_ROBOT_SIZE/2){
-            if(Alliance.get() == Alliance.RED){
+        final double MAX_ROBOT_SIZE = DistanceUnit.CM.fromInches(Math.max(ROBOT_SIZE.first, ROBOT_SIZE.second));
+        final double HALF_FIELD = PoseFunctions.LEN_FIELD/2;
+        if(x > -HALF_FIELD + MAX_ROBOT_SIZE/2 && x < HALF_FIELD - MAX_ROBOT_SIZE/2 &&
+                y > -HALF_FIELD + MAX_ROBOT_SIZE/2 && y < HALF_FIELD - MAX_ROBOT_SIZE/2){
+            if(Alliance.get() == Alliance.BLUE){
                 return y > MAX_ROBOT_SIZE/2;
             }
             else{

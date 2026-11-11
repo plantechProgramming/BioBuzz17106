@@ -14,6 +14,7 @@ import android.util.Pair;
 import com.pedropathing.api.Paths;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
+import com.pedropathing.ivy.commands.Commands;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.misc.RobotPose;
+import org.firstinspires.ftc.teamcode.misc.pedro.Constants;
 import org.firstinspires.ftc.teamcode.misc.utils.Extras;
 import org.firstinspires.ftc.teamcode.misc.utils.Point;
 import org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions;
@@ -58,7 +60,10 @@ public class AutoCommands{
             if(targetPoint != null){
                 Pose2D targetPose2D = new Pose2D(DistanceUnit.CM, targetPoint.getX(), targetPoint.getY(), AngleUnit.DEGREES, 0);
                 Pose targetPose = PoseFunctions.pose2DToPose(targetPose2D);
-                Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent();
+                Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent()
+                        .with(
+                                Constants.foresightConfig.maxPathSpeed.at(0.4)
+                        );
                 return pathToBlob;
             }
         }
@@ -69,8 +74,8 @@ public class AutoCommands{
         pathToBlob = null;
         return sequential(
                 lazy(() -> infinite(() -> pathToBlob = getPathToBlob()).until(() -> pathToBlob != null)),
-                lazy(() -> { System.out.println("go to pose: " + pathToBlob.endPose());
-                    return follow(follower, pathToBlob);})
+                Commands.instant(() -> System.out.println("point to go: " + pathToBlob.endPose())),
+                lazy(() -> follow(follower, pathToBlob))
         );
     }
 

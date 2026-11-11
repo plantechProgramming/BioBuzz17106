@@ -30,7 +30,7 @@ public abstract class TeamAuto extends TeamOpMode {
         Scheduler.reset();
         path = new Paths();
         follower = Constants.create(hardwareMap);
-        follower.setPose(new Pose(DistanceUnit.INCH.fromCm(PoseFunctions.LEN_FIELD/2), DistanceUnit.INCH.fromCm(PoseFunctions.LEN_FIELD/2), Math.toRadians(90)));
+        follower.setPose(new Pose(119, 118.5, Math.toRadians(270)));
         limelight = new Limelight();
 //        if(isFar){
 ////            follower.setPose(path.points.get("startFar"));
