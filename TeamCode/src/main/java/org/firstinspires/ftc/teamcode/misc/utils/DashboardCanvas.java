@@ -17,18 +17,21 @@ public class DashboardCanvas {
     public DashboardCanvas() {
         telemetryPacket = new TelemetryPacket();
     }
-    public DashboardCanvas addPreciseRobot(Pose2D pose) {
+    public DashboardCanvas addPreciseRobot(Pose2D pose, String color) {
         double x = pose.getX(DistanceUnit.INCH);
         double y = pose.getY(DistanceUnit.INCH);
         double heading = pose.getHeading(AngleUnit.RADIANS);
         telemetryPacket.fieldOverlay()
-                .setStroke("#FF0000")
                 .setStrokeWidth(1)
+                .setStroke(color)
                 .setTranslation(x, y)
                 .setRotation(heading)
                 .strokeRect(-ROBOT_SIZE.second/2, -ROBOT_SIZE.first/2,
                         ROBOT_SIZE.second, ROBOT_SIZE.first);
         return this;
+    }
+    public DashboardCanvas addPreciseRobot(Pose2D pose) {
+        return addPreciseRobot(pose, "#FF0000");
     }
     private static final double ROBOT_RADIUS = Math.min(ROBOT_SIZE.first, ROBOT_SIZE.second)/2; // in inches
     // the robot is represented as a circle and the angle is shown by a line from the center of the robot
@@ -51,9 +54,11 @@ public class DashboardCanvas {
     }
 
     public DashboardCanvas addDot(Point p, String color, double radius){
+        double xInch = DistanceUnit.CM.toInches(p.getX());
+        double yInch = DistanceUnit.CM.toInches(p.getY());
         telemetryPacket.fieldOverlay()
                 .setStroke(color)
-                .strokeCircle(p.getX(), p.getY(), radius);
+                .strokeCircle(xInch, yInch, radius);
         return this;
     }
 

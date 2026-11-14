@@ -20,11 +20,11 @@ public class Ray {
         return ray.size();
     }
     public double getRayDis(Point orig){
-        Point furthestPoint = getFurthestPoint(orig);
+        Point furthestPoint = getFarthestPoint(orig);
         return furthestPoint.distanceTo(orig);
     }
 
-    public Point getFurthestPoint(Point orig){
+    public Point getFarthestPoint(Point orig){
         Point furthestPoint = null;
         for(Pair<Point, GameElement> element : ray){
             if(furthestPoint == null || element.first.distanceTo(orig) > furthestPoint.distanceTo(orig)){

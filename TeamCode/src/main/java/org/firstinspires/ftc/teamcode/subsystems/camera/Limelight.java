@@ -5,9 +5,7 @@ import static org.firstinspires.ftc.teamcode.misc.utils.PoseFunctions.disBetween
 
 import android.util.Pair;
 
-import com.pedropathing.math.Pose;
 import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.LLResultTypes.ColorResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes.DetectorResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 
@@ -17,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.misc.InitComponents;
+import org.firstinspires.ftc.teamcode.misc.RobotPose;
 import org.firstinspires.ftc.teamcode.misc.utils.AngleFunctions;
 import org.firstinspires.ftc.teamcode.misc.utils.Extras;
 import org.firstinspires.ftc.teamcode.misc.utils.GameElement;
@@ -25,9 +24,7 @@ import org.firstinspires.ftc.teamcode.misc.utils.Ray;
 import org.firstinspires.ftc.teamcode.misc.utils.filters.PoseLowPass;
 import org.firstinspires.ftc.teamcode.misc.utils.Point;
 
-import java.io.Console;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Limelight {
@@ -69,13 +66,15 @@ public class Limelight {
 
     private Pose2D getPose2DFromXYAngle(double xDeg, double yDeg, GameElement element){ // the angle x and y to the target, x and y angle in deg
         double llForwardOffset = 17;// cm from lens to middle of robot
-        double llHeight = 20; // cm
-        double llRight = -11;
+        double llHeight = 23; // cm
+        double llRight = -12.5;
+        double llPitchUp = -23  ;
         double artifactHeight = element.getUnit().toCm(element.getRadiusInches()); // approximately in cm
         double heightDiff = llHeight - artifactHeight;
 
+        double yDegActual = yDeg+llPitchUp;
         double xRad = Math.toRadians(xDeg);
-        double yRad = Math.toRadians(yDeg);
+        double yRad = Math.toRadians(yDegActual);
 
         double groundDis = heightDiff / Math.tan(yRad); // from cam to target
         double actualY = Math.cos(xRad) * groundDis;
@@ -257,9 +256,10 @@ public class Limelight {
         Point bestPoint = null;
         if(bestRay.first != null){
             System.out.println("best ray: " + bestRay.first.getRay());
-            bestPoint = bestRay.first.getFurthestPoint(PoseFunctions.pose2DToPoint(rPose));
+            Point furthestPointInRay = bestRay.first.getFarthestPoint(PoseFunctions.pose2DToPoint(rPose));
+            bestPoint = Point.transformPoint(furthestPointInRay, ROBOT_SIZE.second/2, AngleUnit.normalizeDegrees(bestRay.second));
         }
-        return  bestPoint;
+        return bestPoint;
     }
     public double getScore(Ray ray, double rayDis){
         final double POLLEN_VALUE = 1;

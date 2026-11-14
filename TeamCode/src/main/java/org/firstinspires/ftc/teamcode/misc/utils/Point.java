@@ -76,7 +76,7 @@ public class Point {
         final double HALF_FIELD = PoseFunctions.LEN_FIELD/2;
         if(x > -HALF_FIELD + MAX_ROBOT_SIZE/2 && x < HALF_FIELD - MAX_ROBOT_SIZE/2 &&
                 y > -HALF_FIELD + MAX_ROBOT_SIZE/2 && y < HALF_FIELD - MAX_ROBOT_SIZE/2){
-            if(Alliance.get() == Alliance.BLUE){
+            if(Alliance.get() == Alliance.RED){
                 return y > MAX_ROBOT_SIZE/2;
             }
             else{
