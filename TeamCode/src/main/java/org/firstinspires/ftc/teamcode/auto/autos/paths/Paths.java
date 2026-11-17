@@ -32,7 +32,8 @@ public class Paths {
 
     private void setPaths(){
         paths.put("start to garden", curve(p.get("start"), p.get("control 1"), p.get("garden")).linear(p.get("start").heading(), p.get("garden").heading()));
-
+        paths.put("test path", line(p.get("start"), p.get("test point")).linear(p.get("start").heading(), p.get("test point").heading()));
+        paths.put("test path return", line(p.get("test point"), p.get("start")).linear(p.get("test point").heading(), p.get("start").heading()));
     }
 
     public Path get(String pathName){

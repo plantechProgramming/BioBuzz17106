@@ -18,6 +18,7 @@ public class Points {
         points.put("garden", poseFactory.of(8.95, 8.63, 270));
         points.put("control 1", poseFactory.of(14.54, 23.95, 0));
         points.put("score", poseFactory.of(45.45, 16.2, 70));
+        points.put("test point", poseFactory.of(120.12, 28.62, 180));
     }
 
     public Pose get(String pointName){

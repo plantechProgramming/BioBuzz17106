@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Tests.Auto;
 
 import static com.pedropathing.api.Paths.line;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.groups.Groups.repeat;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
@@ -26,7 +27,13 @@ public class test extends TeamAuto {
     @Override
     public Command autoRoutine() {
         return sequential(
-                follow(follower, path.get("start to garden"))
+                repeat(
+                        sequential(
+                                follow(follower, path.get("test path")),
+                                waitMs(1000),
+                                follow(follower, path.get("test path return"))
+                        ), 4
+                )
         );
     }
 }
