@@ -62,7 +62,6 @@ public class AutoCommands{
                 Pose targetPose = PoseFunctions.pose2DToPose(targetPose2D);
                 Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent()
                         .with(
-                                Constants.foresightConfig.maxPathSpeed.at(0.4)
                         );
                 return pathToBlob;
             }
