@@ -60,9 +60,7 @@ public class AutoCommands{
             if(targetPoint != null){
                 Pose2D targetPose2D = new Pose2D(DistanceUnit.CM, targetPoint.getX(), targetPoint.getY(), AngleUnit.DEGREES, 0);
                 Pose targetPose = PoseFunctions.pose2DToPose(targetPose2D);
-                Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent()
-                        .with(
-                        );
+                Path pathToBlob = Paths.line(follower.pose(), targetPose).tangent();
                 return pathToBlob;
             }
         }

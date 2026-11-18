@@ -65,10 +65,10 @@ public class Limelight {
 
 
     private Pose2D getPose2DFromXYAngle(double xDeg, double yDeg, GameElement element){ // the angle x and y to the target, x and y angle in deg
-        double llForwardOffset = 17;// cm from lens to middle of robot
-        double llHeight = 23; // cm
+        double llForwardOffset = 18;// cm from lens to middle of robot
+        double llHeight = 30.5; // cm
         double llRight = -12.5;
-        double llPitchUp = -23  ;
+        double llPitchUp = 0;
         double artifactHeight = element.getUnit().toCm(element.getRadiusInches()); // approximately in cm
         double heightDiff = llHeight - artifactHeight;
 
@@ -202,7 +202,7 @@ public class Limelight {
         List<GameElement> filteredGameElements = new ArrayList<>();
         List<Point> points = Extras.I_To_T_ForList(detections, PoseFunctions::pose2DToPoint);
         for(int i=0;i<points.size();i++){
-            if(points.get(i).inYourHalfOfField()){
+            if(points.get(i).inYourHalfOfField() || !GameElement.isGameElementGoodForPickup(gameElements.get(i))){
                 filteredDetections.add(points.get(i));
                 filteredGameElements.add(gameElements.get(i));
             }
@@ -217,6 +217,7 @@ public class Limelight {
         List<GameElement> gameElements = filteredDetections.second;
         List<Point> elementsPoints = filteredDetections.first;
         Point.sortPointsByDisToPoint(PoseFunctions.pose2DToPoint(rPose), elementsPoints);
+//        System.out.println("sortedElements: " + elementsPoints + "gameElements: " + gameElements);
         Ray ray = new Ray(new ArrayList<>());
         for(int i=0; i<elementsPoints.size(); i++){
             Point bottomLeftRect = Point.transformPoint(PoseFunctions.pose2DToPoint(rPose), RAY_WIDTH/2, rayAngle);

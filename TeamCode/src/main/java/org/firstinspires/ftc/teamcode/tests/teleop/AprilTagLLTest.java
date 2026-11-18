@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.tests.teleop;
 
 
+import static org.firstinspires.ftc.teamcode.misc.InitComponents.dashboard;
 import static org.firstinspires.ftc.teamcode.misc.InitComponents.ll;
 import static org.firstinspires.ftc.teamcode.misc.InitComponents.pinpoint;
 
@@ -33,7 +34,6 @@ public class AprilTagLLTest extends TeamOpMode {
     public void postInit(){
         Alliance.set(Alliance.RED);
         Constants.create(hardwareMap).update(); // this line and the next line initialises the drivetrain motors
-        pinpoint.resetPosAndIMU();
     }
 
     @Override
@@ -51,15 +51,15 @@ public class AprilTagLLTest extends TeamOpMode {
                 telemetry.addData("best point to go", bestPointToGo);
                 telemetry.addData("detections", detectionPoints);
                 telemetry.addData("detections elements", detectionElements);
+                DashboardCanvas dashboardCanvas = new DashboardCanvas();
                 if(bestPointToGo != null){
-                    double bestAngle = AngleUnit.normalizeDegrees(90-(Math.toDegrees(Math.atan2(bestPointToGo.getX(), bestPointToGo.getY()))));
+                    double bestAngle = AngleUnit.normalizeDegrees(90-(Math.toDegrees(Math.atan2(bestPointToGo.getX(), bestPointToGo.getY()))-pinpoint.getHeading(AngleUnit.DEGREES)));
                     Pose2D bestPoseToGo = new Pose2D(DistanceUnit.CM, bestPointToGo.getX(), bestPointToGo.getY(), AngleUnit.DEGREES, bestAngle);
-                    new DashboardCanvas()
-                            .addRobotAsCircle(pinpoint.getPosition())
-                            .addGameElements(detectionElements, detectionPoints)
-                            .addRobotAsCircle(bestPoseToGo, Color.BLACK.getColorHex())
-                            .draw();
+                    dashboardCanvas.addRobotAsCircle(bestPoseToGo, Color.BLACK.getColorHex());
                 }
+                dashboardCanvas.addRobotAsCircle(pinpoint.getPosition())
+                        .addGameElements(detectionElements, detectionPoints)
+                        .draw();
             }
             telemetry.update();
             limelight.updateDetectorResult();
